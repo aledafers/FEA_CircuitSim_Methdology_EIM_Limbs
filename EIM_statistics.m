@@ -1,39 +1,31 @@
 close all
 clear all
 clc
+addpath('/home/alejandro/Documents/PhD Bioelectronics/Experiments/Manuscript1/Two_Subjects_Manuscrip1/8_more_subjects')
+fds = fileDatastore('/home/alejandro/Documents/PhD Bioelectronics/Experiments/Manuscript1/Two_Subjects_Manuscrip1/8_more_subjects/*.xml', 'ReadFcn', @importdata);
+fds_2sub = fileDatastore('*.xml', 'ReadFcn', @importdata);
+fullFileNames = fds.Files;
+fullFileNames_2sub = fds_2sub.Files;
+numFiles = length(fullFileNames);
+numFiles_2sub = length(fullFileNames_2sub);
 
-for a = 1:2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+for a = 1:10
     for b = 1:2
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 subject = a; % 
 limb = b;    % 1 = Arm ; 2 = Leg
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 f=[976.563	1953.13	3906.25	7812.5	15625	31250	62500	125000	250000	500000	1000000];
 
-if (subject == 1) && (limb == 1)
-    
-    left_2cm_1 = parseXML('EIM_left_bicep_2cm_11_2021-02-22_T17-29-48.xml');
-    left_2cm_2 = parseXML('EIM_left_bicep_2cm_12_2021-02-22_T17-30-29.xml');
-    left_2cm_3 = parseXML('EIM_left_bicep_2cm_13_2021-02-22_T17-30-59.xml');
-    left_2cm_4 = parseXML('EIM_left_bicep_2cm_14_2021-02-22_T17-31-34.xml');
-    left_2cm_5 = parseXML('EIM_left_bicep_2cm_15_2021-02-22_T17-32-02.xml');
-    left_4cm_1 = parseXML('EIM_left_bicep_4cm_11_2021-02-22_T17-38-00.xml');
-    left_4cm_2 = parseXML('EIM_left_bicep_4cm_12_2021-02-22_T17-38-32.xml');
-    left_4cm_3 = parseXML('EIM_left_bicep_4cm_13_2021-02-22_T17-39-20.xml');
-    left_4cm_4 = parseXML('EIM_left_bicep_4cm_14_2021-02-22_T17-39-49.xml');
-    left_4cm_5 = parseXML('EIM_left_bicep_4cm_15_2021-02-22_T17-40-21.xml');
-
-    right_2cm_1 = parseXML('EIM_right_bicep_2cm_11_2021-02-22_T17-51-04.xml');
-    right_2cm_2 = parseXML('EIM_right_bicep_2cm_12_2021-02-22_T17-51-34.xml');
-    right_2cm_3 = parseXML('EIM_right_bicep_2cm_13_2021-02-22_T17-53-05.xml');
-    right_2cm_4 = parseXML('EIM_right_bicep_2cm_14_2021-02-22_T17-54-56.xml');
-    right_2cm_5 = parseXML('EIM_right_bicep_2cm_15_2021-02-22_T17-55-42.xml');
-    right_4cm_1 = parseXML('EIM_right_bicep_4cm_11_2021-02-22_T18-00-49.xml');
-    right_4cm_2 = parseXML('EIM_right_bicep_4cm_12_2021-02-22_T18-01-36.xml');
-    right_4cm_3 = parseXML('EIM_right_bicep_4cm_13_2021-02-22_T18-02-14.xml');
-    right_4cm_4 = parseXML('EIM_right_bicep_4cm_14_2021-02-22_T18-04-35.xml');
-    right_4cm_5 = parseXML('EIM_right_bicep_4cm_15_2021-02-22_T18-05-11.xml');
+if (subject == 1) && (limb == 1) % subject1 - Arms - wf = 0.4 [cm] 11-15
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames_2sub{2 + k});
+        left_4cm(k+1)  = parseXML(fullFileNames_2sub{2 + 5*3 + k});
+        right_2cm(k+1) = parseXML(fullFileNames_2sub{2 + 5*3*2*2 + k});
+        right_4cm(k+1) = parseXML(fullFileNames_2sub{2 + 5*3 + 5*3*2*2 + k});
+    end
 
     lb_4cm = [4 0 0 0.98 0 0 0.64 0 0 0.83];
     ub_4cm = [5 200 1e-3 0.99 200 1e-3 0.65 200 1e-3 0.84];
@@ -136,29 +128,13 @@ if (subject == 1) && (limb == 1)
     a_cadence_4cm = abs(Z_fit_abs_4cm_wf1(11:21));
     p_cadence_4cm = -(180/pi)*phase(Z_fit_abs_4cm_wf1(11:21));
     
-elseif (subject == 1) && (limb == 2)
-    
-    left_2cm_1 = parseXML('EIM_left_leg_2cm_11_2021-02-22_T18-15-16.xml');
-    left_2cm_2 = parseXML('EIM_left_leg_2cm_12_2021-02-22_T18-16-15.xml');
-    left_2cm_3 = parseXML('EIM_left_leg_2cm_13_2021-02-22_T18-16-41.xml');
-    left_2cm_4 = parseXML('EIM_left_leg_2cm_14_2021-02-22_T18-17-08.xml');
-    left_2cm_5 = parseXML('EIM_left_leg_2cm_15_2021-02-22_T18-17-37.xml');
-    left_4cm_1 = parseXML('EIM_left_leg_4cm_11_2021-02-22_T18-21-38.xml');
-    left_4cm_2 = parseXML('EIM_left_leg_4cm_12_2021-02-22_T18-22-09.xml');
-    left_4cm_3 = parseXML('EIM_left_leg_4cm_13_2021-02-22_T18-22-49.xml');
-    left_4cm_4 = parseXML('EIM_left_leg_4cm_14_2021-02-22_T18-23-18.xml');
-    left_4cm_5 = parseXML('EIM_left_leg_4cm_15_2021-02-22_T18-24-01.xml');
-
-    right_2cm_1 = parseXML('EIM_right_leg_2cm_11_2021-02-22_T18-34-59.xml');
-    right_2cm_2 = parseXML('EIM_right_leg_2cm_12_2021-02-22_T18-35-32.xml');
-    right_2cm_3 = parseXML('EIM_right_leg_2cm_13_2021-02-22_T18-36-00.xml');
-    right_2cm_4 = parseXML('EIM_right_leg_2cm_14_2021-02-22_T18-37-45.xml');
-    right_2cm_5 = parseXML('EIM_right_leg_2cm_15_2021-02-22_T18-38-24.xml');
-    right_4cm_1 = parseXML('EIM_right_leg_4cm_11_2021-02-22_T18-43-26.xml');
-    right_4cm_2 = parseXML('EIM_right_leg_4cm_12_2021-02-22_T18-43-56.xml');
-    right_4cm_3 = parseXML('EIM_right_leg_4cm_13_2021-02-22_T18-44-23.xml');
-    right_4cm_4 = parseXML('EIM_right_leg_4cm_14_2021-02-22_T18-44-53.xml');
-    right_4cm_5 = parseXML('EIM_right_leg_4cm_15_2021-02-22_T18-45-25.xml');
+elseif (subject == 1) && (limb == 2) % Legs - wf = 0.7 [cm]
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames_2sub{2 + 5*3*2 + k});
+        left_4cm(k+1)  = parseXML(fullFileNames_2sub{2 + 5*3 + 5*3*2 + k});
+        right_2cm(k+1) = parseXML(fullFileNames_2sub{2 + 5*3*2*2 + 5*3*2 + k});
+        right_4cm(k+1) = parseXML(fullFileNames_2sub{2 + 5*3 + 5*3*2*2 + 5*3*2 + k});
+    end
 
     lb_4cm = [4 0 0 0.98 0 0 0.64 0 0 0.83];
     ub_4cm = [5 200 1e-3 0.99 200 1e-3 0.65 200 1e-3 0.84];
@@ -261,29 +237,20 @@ elseif (subject == 1) && (limb == 2)
     a_cadence_4cm = abs(Z_fit_abs_4cm_wf2(11:21));
     p_cadence_4cm = -(180/pi)*phase(Z_fit_abs_4cm_wf2(11:21));
     
-elseif (subject == 2) && (limb == 1)
-
-    left_2cm_1 = parseXML('EIM_left_bicep_2cm_6_2021-02-22_T10-35-45.xml');
-    left_2cm_2 = parseXML('EIM_left_bicep_2cm_7_2021-02-22_T10-36-16.xml');
-    left_2cm_3 = parseXML('EIM_left_bicep_2cm_8_2021-02-22_T10-36-42.xml');
-    left_2cm_4 = parseXML('EIM_left_bicep_2cm_9_2021-02-22_T10-37-16.xml');
-    left_2cm_5 = parseXML('EIM_left_bicep_2cm_10_2021-02-22_T10-37-43.xml');
-    left_4cm_1 = parseXML('EIM_left_bicep_4cm_6_2021-02-22_T10-41-16.xml');
-    left_4cm_2 = parseXML('EIM_left_bicep_4cm_7_2021-02-22_T10-41-43.xml');
-    left_4cm_3 = parseXML('EIM_left_bicep_4cm_8_2021-02-22_T10-42-10.xml');
-    left_4cm_4 = parseXML('EIM_left_bicep_4cm_9_2021-02-22_T10-42-36.xml');
-    left_4cm_5 = parseXML('EIM_left_bicep_4cm_10_2021-02-22_T10-43-02.xml');
-
-    right_2cm_1 = parseXML('EIM_right_bicep_2cm_6_2021-02-22_T10-51-11.xml');
-    right_2cm_2 = parseXML('EIM_right_bicep_2cm_7_2021-02-22_T10-51-37.xml');
-    right_2cm_3 = parseXML('EIM_right_bicep_2cm_8_2021-02-22_T10-52-04.xml');
-    right_2cm_4 = parseXML('EIM_right_bicep_2cm_9_2021-02-22_T10-52-32.xml');
-    right_2cm_5 = parseXML('EIM_right_bicep_2cm_10_2021-02-22_T10-52-58.xml');
-    right_4cm_1 = parseXML('EIM_right_bicep_4cm_6_2021-02-22_T10-56-59.xml');
-    right_4cm_2 = parseXML('EIM_right_bicep_4cm_7_2021-02-22_T10-57-25.xml');
-    right_4cm_3 = parseXML('EIM_right_bicep_4cm_8_2021-02-22_T10-57-53.xml');
-    right_4cm_4 = parseXML('EIM_right_bicep_4cm_9_2021-02-22_T10-58-19.xml');
-    right_4cm_5 = parseXML('EIM_right_bicep_4cm_10_2021-02-22_T10-58-47.xml');
+elseif (subject == 2) && (limb == 1) % Arms - wf = 0.4 [cm] 6-10
+    for k = 0 : 4
+        if k < 4
+            left_2cm(k+1)  = parseXML(fullFileNames_2sub{2 + 5*2 + k});
+            left_4cm(k+1)  = parseXML(fullFileNames_2sub{2 + 5*2 + 5*3 + k});
+            right_2cm(k+1) = parseXML(fullFileNames_2sub{2 + 5*2 + 5*3*2*2 + k});
+            right_4cm(k+1) = parseXML(fullFileNames_2sub{2 + 5*2 + 5*3 + 5*3*2*2 + k});
+        elseif k == 4
+            left_2cm(k+1)  = parseXML(fullFileNames_2sub{2 + k - 5});
+            left_4cm(k+1)  = parseXML(fullFileNames_2sub{2 + 5*3 + k -5});
+            right_2cm(k+1) = parseXML(fullFileNames_2sub{2 + 5*3*2*2 + k -5});
+            right_4cm(k+1) = parseXML(fullFileNames_2sub{2 + 5*3 + 5*3*2*2 + k -5});
+        end
+    end
     
     lb_4cm = [4 0 0 0.98 0 0 0.64 0 0 0.83];
     ub_4cm = [5 200 1e-3 0.99 200 1e-3 0.65 200 1e-3 0.84];
@@ -386,29 +353,20 @@ elseif (subject == 2) && (limb == 1)
     a_cadence_4cm = abs(Z_fit_abs_4cm_wf5(11:21));
     p_cadence_4cm = -(180/pi)*phase(Z_fit_abs_4cm_wf5(11:21));
     
-elseif (subject == 2) && (limb == 2)
-    
-    left_2cm_1 = parseXML('EIM_left_leg_2cm_6_2021-02-22_T11-11-42.xml');
-    left_2cm_2 = parseXML('EIM_left_leg_2cm_7_2021-02-22_T11-12-59.xml');
-    left_2cm_3 = parseXML('EIM_left_leg_2cm_8_2021-02-22_T11-13-47.xml');
-    left_2cm_4 = parseXML('EIM_left_leg_2cm_9_2021-02-22_T11-14-37.xml');
-    left_2cm_5 = parseXML('EIM_left_leg_2cm_10_2021-02-22_T11-15-42.xml');
-    left_4cm_1 = parseXML('EIM_left_leg_4cm_6_2021-02-22_T11-25-01.xml');
-    left_4cm_2 = parseXML('EIM_left_leg_4cm_7_2021-02-22_T11-25-28.xml');
-    left_4cm_3 = parseXML('EIM_left_leg_4cm_8_2021-02-22_T11-25-55.xml');
-    left_4cm_4 = parseXML('EIM_left_leg_4cm_9_2021-02-22_T11-26-24.xml');
-    left_4cm_5 = parseXML('EIM_left_leg_4cm_10_2021-02-22_T11-26-53.xml');
-
-    right_2cm_1 = parseXML('EIM_right_leg_2cm_6_2021-02-22_T11-30-47.xml');
-    right_2cm_2 = parseXML('EIM_right_leg_2cm_7_2021-02-22_T11-31-16.xml');
-    right_2cm_3 = parseXML('EIM_right_leg_2cm_8_2021-02-22_T11-31-43.xml');
-    right_2cm_4 = parseXML('EIM_right_leg_2cm_9_2021-02-22_T11-32-09.xml');
-    right_2cm_5 = parseXML('EIM_right_leg_2cm_10_2021-02-22_T11-32-35.xml');
-    right_4cm_1 = parseXML('EIM_right_leg_4cm_6_2021-02-22_T11-35-58.xml');
-    right_4cm_2 = parseXML('EIM_right_leg_4cm_7_2021-02-22_T11-36-25.xml');
-    right_4cm_3 = parseXML('EIM_right_leg_4cm_8_2021-02-22_T11-36-51.xml');
-    right_4cm_4 = parseXML('EIM_right_leg_4cm_9_2021-02-22_T11-37-18.xml');
-    right_4cm_5 = parseXML('EIM_right_leg_4cm_10_2021-02-22_T11-37-46.xml');
+elseif (subject == 2) && (limb == 2) % Legs - wf = 1 [cm] 6-10
+    for k = 0 : 4
+        if k < 4
+            left_2cm(k+1)  = parseXML(fullFileNames_2sub{2 + 5*2 + 5*3*2 + k});
+            left_4cm(k+1)  = parseXML(fullFileNames_2sub{2 + 5*2 + 5*3 + 5*3*2 + k});
+            right_2cm(k+1) = parseXML(fullFileNames_2sub{2 + 5*2 + 5*3*2*2 + 5*3*2 + k});
+            right_4cm(k+1) = parseXML(fullFileNames_2sub{2 + 5*2 + 5*3 + 5*3*2*2 + 5*3*2 + k});
+        elseif k == 4
+            left_2cm(k+1)  = parseXML(fullFileNames_2sub{2 + 5*3*2 + k - 5});
+            left_4cm(k+1)  = parseXML(fullFileNames_2sub{2 + 5*3 + 5*3*2 + k -5});
+            right_2cm(k+1) = parseXML(fullFileNames_2sub{2 + 5*3*2*2 + 5*3*2 + k -5});
+            right_4cm(k+1) = parseXML(fullFileNames_2sub{2 + 5*3 + 5*3*2*2 + 5*3*2 + k -5});
+        end
+    end
     
     lb_4cm = [4 0 0 0.98 0 0 0.64 0 0 0.83];
     ub_4cm = [5 200 1e-3 0.99 200 1e-3 0.65 200 1e-3 0.84];
@@ -511,341 +469,712 @@ elseif (subject == 2) && (limb == 2)
     a_cadence_4cm = abs(Z_fit_abs_4cm_wf2(11:21));
     p_cadence_4cm = -(180/pi)*phase(Z_fit_abs_4cm_wf2(11:21));
     
+elseif (subject == 3) && (limb == 1) % Yukai - Legs - wf = 1 [cm]
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5});
+    end
+elseif (subject == 3) && (limb == 2) % Yukai - Legs - wf = 1 [cm]   
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5*2});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5 + 8*5*2});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5*2});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5 + 8*5*2});
+    end
+elseif (subject == 4) && (limb == 1) % Yukai - Legs - wf = 1 [cm]
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5});
+    end
+elseif (subject == 4) && (limb == 2) % Yukai - Legs - wf = 1 [cm]   
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5*2});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5 + 8*5*2});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5*2});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5 + 8*5*2});
+    end
+elseif (subject == 5) && (limb == 1) % Yukai - Legs - wf = 1 [cm]
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5});
+    end
+elseif (subject == 5) && (limb == 2) % Yukai - Legs - wf = 1 [cm]   
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5*2});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5 + 8*5*2});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5*2});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5 + 8*5*2});
+    end
+elseif (subject == 6) && (limb == 1) % Yukai - Legs - wf = 1 [cm]
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5});
+    end
+elseif (subject == 6) && (limb == 2) % Yukai - Legs - wf = 1 [cm]   
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5*2});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5 + 8*5*2});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5*2});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5 + 8*5*2});
+    end
+elseif (subject == 7) && (limb == 1) % Yukai - Legs - wf = 1 [cm]
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5});
+    end
+elseif (subject == 7) && (limb == 2) % Yukai - Legs - wf = 1 [cm]   
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5*2});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5 + 8*5*2});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5*2});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5 + 8*5*2});
+    end
+elseif (subject == 8) && (limb == 1) % Yukai - Legs - wf = 1 [cm]
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5});
+    end
+elseif (subject == 8) && (limb == 2) % Yukai - Legs - wf = 1 [cm]   
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5*2});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5 + 8*5*2});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5*2});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5 + 8*5*2});
+    end
+elseif (subject == 9) && (limb == 1) % Yukai - Legs - wf = 1 [cm]
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5});
+    end
+elseif (subject == 9) && (limb == 2) % Yukai - Legs - wf = 1 [cm]   
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5*2});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5 + 8*5*2});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5*2});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5 + 8*5*2});
+    end
+elseif (subject == 10) && (limb == 1) % Yukai - Legs - wf = 1 [cm]
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5});
+    end
+elseif (subject == 10) && (limb == 2) % Yukai - Legs - wf = 1 [cm]   
+    for k = 0 : 4
+        left_2cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5*2});
+        left_4cm(k+1)  = parseXML(fullFileNames{subject-2 + 8*k + 8*5 + 8*5*2});
+        right_2cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5*2});
+        right_4cm(k+1) = parseXML(fullFileNames{subject-2 + 8*k + 8*5*4 + 8*5 + 8*5*2});
+    end
 end
  
-a_left_2cm = [str2double(left_2cm_1.Children(2).Children(10).Children(2).Children.Data) str2double(left_2cm_1.Children(2).Children(10).Children(4).Children.Data) str2double(left_2cm_1.Children(2).Children(10).Children(6).Children.Data) str2double(left_2cm_1.Children(2).Children(10).Children(8).Children.Data) str2double(left_2cm_1.Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm_1.Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm_1.Children(2).Children(10).Children(14).Children.Data) str2double(left_2cm_1.Children(2).Children(10).Children(16).Children.Data) str2double(left_2cm_1.Children(2).Children(10).Children(18).Children.Data) str2double(left_2cm_1.Children(2).Children(10).Children(20).Children.Data) str2double(left_2cm_1.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(left_2cm_2.Children(2).Children(10).Children(2).Children.Data) str2double(left_2cm_2.Children(2).Children(10).Children(4).Children.Data) str2double(left_2cm_2.Children(2).Children(10).Children(6).Children.Data) str2double(left_2cm_2.Children(2).Children(10).Children(8).Children.Data) str2double(left_2cm_2.Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm_2.Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm_2.Children(2).Children(10).Children(14).Children.Data) str2double(left_2cm_2.Children(2).Children(10).Children(16).Children.Data) str2double(left_2cm_2.Children(2).Children(10).Children(18).Children.Data) str2double(left_2cm_2.Children(2).Children(10).Children(20).Children.Data) str2double(left_2cm_2.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(left_2cm_3.Children(2).Children(10).Children(2).Children.Data) str2double(left_2cm_3.Children(2).Children(10).Children(4).Children.Data) str2double(left_2cm_3.Children(2).Children(10).Children(6).Children.Data) str2double(left_2cm_3.Children(2).Children(10).Children(8).Children.Data) str2double(left_2cm_3.Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm_3.Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm_3.Children(2).Children(10).Children(14).Children.Data) str2double(left_2cm_3.Children(2).Children(10).Children(16).Children.Data) str2double(left_2cm_3.Children(2).Children(10).Children(18).Children.Data) str2double(left_2cm_3.Children(2).Children(10).Children(20).Children.Data) str2double(left_2cm_3.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(left_2cm_4.Children(2).Children(10).Children(2).Children.Data) str2double(left_2cm_4.Children(2).Children(10).Children(4).Children.Data) str2double(left_2cm_4.Children(2).Children(10).Children(6).Children.Data) str2double(left_2cm_4.Children(2).Children(10).Children(8).Children.Data) str2double(left_2cm_4.Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm_4.Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm_4.Children(2).Children(10).Children(14).Children.Data) str2double(left_2cm_4.Children(2).Children(10).Children(16).Children.Data) str2double(left_2cm_4.Children(2).Children(10).Children(18).Children.Data) str2double(left_2cm_4.Children(2).Children(10).Children(20).Children.Data) str2double(left_2cm_4.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(left_2cm_5.Children(2).Children(10).Children(2).Children.Data) str2double(left_2cm_5.Children(2).Children(10).Children(4).Children.Data) str2double(left_2cm_5.Children(2).Children(10).Children(6).Children.Data) str2double(left_2cm_5.Children(2).Children(10).Children(8).Children.Data) str2double(left_2cm_5.Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm_5.Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm_5.Children(2).Children(10).Children(14).Children.Data) str2double(left_2cm_5.Children(2).Children(10).Children(16).Children.Data) str2double(left_2cm_5.Children(2).Children(10).Children(18).Children.Data) str2double(left_2cm_5.Children(2).Children(10).Children(20).Children.Data) str2double(left_2cm_5.Children(2).Children(10).Children(22).Children.Data)];
+a_left_2cm =   [str2double(left_2cm(1).Children(2).Children(10).Children(2).Children.Data) str2double(left_2cm(1).Children(2).Children(10).Children(4).Children.Data) str2double(left_2cm(1).Children(2).Children(10).Children(6).Children.Data) str2double(left_2cm(1).Children(2).Children(10).Children(8).Children.Data) str2double(left_2cm(1).Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm(1).Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm(1).Children(2).Children(10).Children(14).Children.Data) str2double(left_2cm(1).Children(2).Children(10).Children(16).Children.Data) str2double(left_2cm(1).Children(2).Children(10).Children(18).Children.Data) str2double(left_2cm(1).Children(2).Children(10).Children(20).Children.Data) str2double(left_2cm(1).Children(2).Children(10).Children(22).Children.Data)
+                str2double(left_2cm(2).Children(2).Children(10).Children(2).Children.Data) str2double(left_2cm(2).Children(2).Children(10).Children(4).Children.Data) str2double(left_2cm(2).Children(2).Children(10).Children(6).Children.Data) str2double(left_2cm(2).Children(2).Children(10).Children(8).Children.Data) str2double(left_2cm(2).Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm(2).Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm(2).Children(2).Children(10).Children(14).Children.Data) str2double(left_2cm(2).Children(2).Children(10).Children(16).Children.Data) str2double(left_2cm(2).Children(2).Children(10).Children(18).Children.Data) str2double(left_2cm(2).Children(2).Children(10).Children(20).Children.Data) str2double(left_2cm(2).Children(2).Children(10).Children(22).Children.Data)
+                str2double(left_2cm(3).Children(2).Children(10).Children(2).Children.Data) str2double(left_2cm(3).Children(2).Children(10).Children(4).Children.Data) str2double(left_2cm(3).Children(2).Children(10).Children(6).Children.Data) str2double(left_2cm(3).Children(2).Children(10).Children(8).Children.Data) str2double(left_2cm(3).Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm(3).Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm(3).Children(2).Children(10).Children(14).Children.Data) str2double(left_2cm(3).Children(2).Children(10).Children(16).Children.Data) str2double(left_2cm(3).Children(2).Children(10).Children(18).Children.Data) str2double(left_2cm(3).Children(2).Children(10).Children(20).Children.Data) str2double(left_2cm(3).Children(2).Children(10).Children(22).Children.Data)
+                str2double(left_2cm(4).Children(2).Children(10).Children(2).Children.Data) str2double(left_2cm(4).Children(2).Children(10).Children(4).Children.Data) str2double(left_2cm(4).Children(2).Children(10).Children(6).Children.Data) str2double(left_2cm(4).Children(2).Children(10).Children(8).Children.Data) str2double(left_2cm(4).Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm(4).Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm(4).Children(2).Children(10).Children(14).Children.Data) str2double(left_2cm(4).Children(2).Children(10).Children(16).Children.Data) str2double(left_2cm(4).Children(2).Children(10).Children(18).Children.Data) str2double(left_2cm(4).Children(2).Children(10).Children(20).Children.Data) str2double(left_2cm(4).Children(2).Children(10).Children(22).Children.Data)
+                str2double(left_2cm(5).Children(2).Children(10).Children(2).Children.Data) str2double(left_2cm(5).Children(2).Children(10).Children(4).Children.Data) str2double(left_2cm(5).Children(2).Children(10).Children(6).Children.Data) str2double(left_2cm(5).Children(2).Children(10).Children(8).Children.Data) str2double(left_2cm(5).Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm(5).Children(2).Children(10).Children(10).Children.Data) str2double(left_2cm(5).Children(2).Children(10).Children(14).Children.Data) str2double(left_2cm(5).Children(2).Children(10).Children(16).Children.Data) str2double(left_2cm(5).Children(2).Children(10).Children(18).Children.Data) str2double(left_2cm(5).Children(2).Children(10).Children(20).Children.Data) str2double(left_2cm(5).Children(2).Children(10).Children(22).Children.Data)];
 
-a_right_2cm = [str2double(right_2cm_1.Children(2).Children(10).Children(2).Children.Data) str2double(right_2cm_1.Children(2).Children(10).Children(4).Children.Data) str2double(right_2cm_1.Children(2).Children(10).Children(6).Children.Data) str2double(right_2cm_1.Children(2).Children(10).Children(8).Children.Data) str2double(right_2cm_1.Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm_1.Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm_1.Children(2).Children(10).Children(14).Children.Data) str2double(right_2cm_1.Children(2).Children(10).Children(16).Children.Data) str2double(right_2cm_1.Children(2).Children(10).Children(18).Children.Data) str2double(right_2cm_1.Children(2).Children(10).Children(20).Children.Data) str2double(right_2cm_1.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(right_2cm_2.Children(2).Children(10).Children(2).Children.Data) str2double(right_2cm_2.Children(2).Children(10).Children(4).Children.Data) str2double(right_2cm_2.Children(2).Children(10).Children(6).Children.Data) str2double(right_2cm_2.Children(2).Children(10).Children(8).Children.Data) str2double(right_2cm_2.Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm_2.Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm_2.Children(2).Children(10).Children(14).Children.Data) str2double(right_2cm_2.Children(2).Children(10).Children(16).Children.Data) str2double(right_2cm_2.Children(2).Children(10).Children(18).Children.Data) str2double(right_2cm_2.Children(2).Children(10).Children(20).Children.Data) str2double(right_2cm_2.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(right_2cm_3.Children(2).Children(10).Children(2).Children.Data) str2double(right_2cm_3.Children(2).Children(10).Children(4).Children.Data) str2double(right_2cm_3.Children(2).Children(10).Children(6).Children.Data) str2double(right_2cm_3.Children(2).Children(10).Children(8).Children.Data) str2double(right_2cm_3.Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm_3.Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm_3.Children(2).Children(10).Children(14).Children.Data) str2double(right_2cm_3.Children(2).Children(10).Children(16).Children.Data) str2double(right_2cm_3.Children(2).Children(10).Children(18).Children.Data) str2double(right_2cm_3.Children(2).Children(10).Children(20).Children.Data) str2double(right_2cm_3.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(right_2cm_4.Children(2).Children(10).Children(2).Children.Data) str2double(right_2cm_4.Children(2).Children(10).Children(4).Children.Data) str2double(right_2cm_4.Children(2).Children(10).Children(6).Children.Data) str2double(right_2cm_4.Children(2).Children(10).Children(8).Children.Data) str2double(right_2cm_4.Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm_4.Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm_4.Children(2).Children(10).Children(14).Children.Data) str2double(right_2cm_4.Children(2).Children(10).Children(16).Children.Data) str2double(right_2cm_4.Children(2).Children(10).Children(18).Children.Data) str2double(right_2cm_4.Children(2).Children(10).Children(20).Children.Data) str2double(right_2cm_4.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(right_2cm_5.Children(2).Children(10).Children(2).Children.Data) str2double(right_2cm_5.Children(2).Children(10).Children(4).Children.Data) str2double(right_2cm_5.Children(2).Children(10).Children(6).Children.Data) str2double(right_2cm_5.Children(2).Children(10).Children(8).Children.Data) str2double(right_2cm_5.Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm_5.Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm_5.Children(2).Children(10).Children(14).Children.Data) str2double(right_2cm_5.Children(2).Children(10).Children(16).Children.Data) str2double(right_2cm_5.Children(2).Children(10).Children(18).Children.Data) str2double(right_2cm_5.Children(2).Children(10).Children(20).Children.Data) str2double(right_2cm_5.Children(2).Children(10).Children(22).Children.Data)];
+a_right_2cm =  [str2double(right_2cm(1).Children(2).Children(10).Children(2).Children.Data) str2double(right_2cm(1).Children(2).Children(10).Children(4).Children.Data) str2double(right_2cm(1).Children(2).Children(10).Children(6).Children.Data) str2double(right_2cm(1).Children(2).Children(10).Children(8).Children.Data) str2double(right_2cm(1).Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm(1).Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm(1).Children(2).Children(10).Children(14).Children.Data) str2double(right_2cm(1).Children(2).Children(10).Children(16).Children.Data) str2double(right_2cm(1).Children(2).Children(10).Children(18).Children.Data) str2double(right_2cm(1).Children(2).Children(10).Children(20).Children.Data) str2double(right_2cm(1).Children(2).Children(10).Children(22).Children.Data)
+                str2double(right_2cm(2).Children(2).Children(10).Children(2).Children.Data) str2double(right_2cm(2).Children(2).Children(10).Children(4).Children.Data) str2double(right_2cm(2).Children(2).Children(10).Children(6).Children.Data) str2double(right_2cm(2).Children(2).Children(10).Children(8).Children.Data) str2double(right_2cm(2).Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm(2).Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm(2).Children(2).Children(10).Children(14).Children.Data) str2double(right_2cm(2).Children(2).Children(10).Children(16).Children.Data) str2double(right_2cm(2).Children(2).Children(10).Children(18).Children.Data) str2double(right_2cm(2).Children(2).Children(10).Children(20).Children.Data) str2double(right_2cm(2).Children(2).Children(10).Children(22).Children.Data)
+                str2double(right_2cm(3).Children(2).Children(10).Children(2).Children.Data) str2double(right_2cm(3).Children(2).Children(10).Children(4).Children.Data) str2double(right_2cm(3).Children(2).Children(10).Children(6).Children.Data) str2double(right_2cm(3).Children(2).Children(10).Children(8).Children.Data) str2double(right_2cm(3).Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm(3).Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm(3).Children(2).Children(10).Children(14).Children.Data) str2double(right_2cm(3).Children(2).Children(10).Children(16).Children.Data) str2double(right_2cm(3).Children(2).Children(10).Children(18).Children.Data) str2double(right_2cm(3).Children(2).Children(10).Children(20).Children.Data) str2double(right_2cm(3).Children(2).Children(10).Children(22).Children.Data)
+                str2double(right_2cm(4).Children(2).Children(10).Children(2).Children.Data) str2double(right_2cm(4).Children(2).Children(10).Children(4).Children.Data) str2double(right_2cm(4).Children(2).Children(10).Children(6).Children.Data) str2double(right_2cm(4).Children(2).Children(10).Children(8).Children.Data) str2double(right_2cm(4).Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm(4).Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm(4).Children(2).Children(10).Children(14).Children.Data) str2double(right_2cm(4).Children(2).Children(10).Children(16).Children.Data) str2double(right_2cm(4).Children(2).Children(10).Children(18).Children.Data) str2double(right_2cm(4).Children(2).Children(10).Children(20).Children.Data) str2double(right_2cm(4).Children(2).Children(10).Children(22).Children.Data)
+                str2double(right_2cm(5).Children(2).Children(10).Children(2).Children.Data) str2double(right_2cm(5).Children(2).Children(10).Children(4).Children.Data) str2double(right_2cm(5).Children(2).Children(10).Children(6).Children.Data) str2double(right_2cm(5).Children(2).Children(10).Children(8).Children.Data) str2double(right_2cm(5).Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm(5).Children(2).Children(10).Children(10).Children.Data) str2double(right_2cm(5).Children(2).Children(10).Children(14).Children.Data) str2double(right_2cm(5).Children(2).Children(10).Children(16).Children.Data) str2double(right_2cm(5).Children(2).Children(10).Children(18).Children.Data) str2double(right_2cm(5).Children(2).Children(10).Children(20).Children.Data) str2double(right_2cm(5).Children(2).Children(10).Children(22).Children.Data)];
                    
-a_left_4cm = [str2double(left_4cm_1.Children(2).Children(10).Children(2).Children.Data) str2double(left_4cm_1.Children(2).Children(10).Children(4).Children.Data) str2double(left_4cm_1.Children(2).Children(10).Children(6).Children.Data) str2double(left_4cm_1.Children(2).Children(10).Children(8).Children.Data) str2double(left_4cm_1.Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm_1.Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm_1.Children(2).Children(10).Children(14).Children.Data) str2double(left_4cm_1.Children(2).Children(10).Children(16).Children.Data) str2double(left_4cm_1.Children(2).Children(10).Children(18).Children.Data) str2double(left_4cm_1.Children(2).Children(10).Children(20).Children.Data) str2double(left_4cm_1.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(left_4cm_2.Children(2).Children(10).Children(2).Children.Data) str2double(left_4cm_2.Children(2).Children(10).Children(4).Children.Data) str2double(left_4cm_2.Children(2).Children(10).Children(6).Children.Data) str2double(left_4cm_2.Children(2).Children(10).Children(8).Children.Data) str2double(left_4cm_2.Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm_2.Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm_2.Children(2).Children(10).Children(14).Children.Data) str2double(left_4cm_2.Children(2).Children(10).Children(16).Children.Data) str2double(left_4cm_2.Children(2).Children(10).Children(18).Children.Data) str2double(left_4cm_2.Children(2).Children(10).Children(20).Children.Data) str2double(left_4cm_2.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(left_4cm_3.Children(2).Children(10).Children(2).Children.Data) str2double(left_4cm_3.Children(2).Children(10).Children(4).Children.Data) str2double(left_4cm_3.Children(2).Children(10).Children(6).Children.Data) str2double(left_4cm_3.Children(2).Children(10).Children(8).Children.Data) str2double(left_4cm_3.Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm_3.Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm_3.Children(2).Children(10).Children(14).Children.Data) str2double(left_4cm_3.Children(2).Children(10).Children(16).Children.Data) str2double(left_4cm_3.Children(2).Children(10).Children(18).Children.Data) str2double(left_4cm_3.Children(2).Children(10).Children(20).Children.Data) str2double(left_4cm_3.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(left_4cm_4.Children(2).Children(10).Children(2).Children.Data) str2double(left_4cm_4.Children(2).Children(10).Children(4).Children.Data) str2double(left_4cm_4.Children(2).Children(10).Children(6).Children.Data) str2double(left_4cm_4.Children(2).Children(10).Children(8).Children.Data) str2double(left_4cm_4.Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm_4.Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm_4.Children(2).Children(10).Children(14).Children.Data) str2double(left_4cm_4.Children(2).Children(10).Children(16).Children.Data) str2double(left_4cm_4.Children(2).Children(10).Children(18).Children.Data) str2double(left_4cm_4.Children(2).Children(10).Children(20).Children.Data) str2double(left_4cm_4.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(left_4cm_5.Children(2).Children(10).Children(2).Children.Data) str2double(left_4cm_5.Children(2).Children(10).Children(4).Children.Data) str2double(left_4cm_5.Children(2).Children(10).Children(6).Children.Data) str2double(left_4cm_5.Children(2).Children(10).Children(8).Children.Data) str2double(left_4cm_5.Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm_5.Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm_5.Children(2).Children(10).Children(14).Children.Data) str2double(left_4cm_5.Children(2).Children(10).Children(16).Children.Data) str2double(left_4cm_5.Children(2).Children(10).Children(18).Children.Data) str2double(left_4cm_5.Children(2).Children(10).Children(20).Children.Data) str2double(left_4cm_5.Children(2).Children(10).Children(22).Children.Data)];
+a_left_4cm =   [str2double(left_4cm(1).Children(2).Children(10).Children(2).Children.Data) str2double(left_4cm(1).Children(2).Children(10).Children(4).Children.Data) str2double(left_4cm(1).Children(2).Children(10).Children(6).Children.Data) str2double(left_4cm(1).Children(2).Children(10).Children(8).Children.Data) str2double(left_4cm(1).Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm(1).Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm(1).Children(2).Children(10).Children(14).Children.Data) str2double(left_4cm(1).Children(2).Children(10).Children(16).Children.Data) str2double(left_4cm(1).Children(2).Children(10).Children(18).Children.Data) str2double(left_4cm(1).Children(2).Children(10).Children(20).Children.Data) str2double(left_4cm(1).Children(2).Children(10).Children(22).Children.Data)
+                str2double(left_4cm(2).Children(2).Children(10).Children(2).Children.Data) str2double(left_4cm(2).Children(2).Children(10).Children(4).Children.Data) str2double(left_4cm(2).Children(2).Children(10).Children(6).Children.Data) str2double(left_4cm(2).Children(2).Children(10).Children(8).Children.Data) str2double(left_4cm(2).Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm(2).Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm(2).Children(2).Children(10).Children(14).Children.Data) str2double(left_4cm(2).Children(2).Children(10).Children(16).Children.Data) str2double(left_4cm(2).Children(2).Children(10).Children(18).Children.Data) str2double(left_4cm(2).Children(2).Children(10).Children(20).Children.Data) str2double(left_4cm(2).Children(2).Children(10).Children(22).Children.Data)
+                str2double(left_4cm(3).Children(2).Children(10).Children(2).Children.Data) str2double(left_4cm(3).Children(2).Children(10).Children(4).Children.Data) str2double(left_4cm(3).Children(2).Children(10).Children(6).Children.Data) str2double(left_4cm(3).Children(2).Children(10).Children(8).Children.Data) str2double(left_4cm(3).Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm(3).Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm(3).Children(2).Children(10).Children(14).Children.Data) str2double(left_4cm(3).Children(2).Children(10).Children(16).Children.Data) str2double(left_4cm(3).Children(2).Children(10).Children(18).Children.Data) str2double(left_4cm(3).Children(2).Children(10).Children(20).Children.Data) str2double(left_4cm(3).Children(2).Children(10).Children(22).Children.Data)
+                str2double(left_4cm(4).Children(2).Children(10).Children(2).Children.Data) str2double(left_4cm(4).Children(2).Children(10).Children(4).Children.Data) str2double(left_4cm(4).Children(2).Children(10).Children(6).Children.Data) str2double(left_4cm(4).Children(2).Children(10).Children(8).Children.Data) str2double(left_4cm(4).Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm(4).Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm(4).Children(2).Children(10).Children(14).Children.Data) str2double(left_4cm(4).Children(2).Children(10).Children(16).Children.Data) str2double(left_4cm(4).Children(2).Children(10).Children(18).Children.Data) str2double(left_4cm(4).Children(2).Children(10).Children(20).Children.Data) str2double(left_4cm(4).Children(2).Children(10).Children(22).Children.Data)
+                str2double(left_4cm(5).Children(2).Children(10).Children(2).Children.Data) str2double(left_4cm(5).Children(2).Children(10).Children(4).Children.Data) str2double(left_4cm(5).Children(2).Children(10).Children(6).Children.Data) str2double(left_4cm(5).Children(2).Children(10).Children(8).Children.Data) str2double(left_4cm(5).Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm(5).Children(2).Children(10).Children(10).Children.Data) str2double(left_4cm(5).Children(2).Children(10).Children(14).Children.Data) str2double(left_4cm(5).Children(2).Children(10).Children(16).Children.Data) str2double(left_4cm(5).Children(2).Children(10).Children(18).Children.Data) str2double(left_4cm(5).Children(2).Children(10).Children(20).Children.Data) str2double(left_4cm(5).Children(2).Children(10).Children(22).Children.Data)];
                    
-a_right_4cm = [str2double(right_4cm_1.Children(2).Children(10).Children(2).Children.Data) str2double(right_4cm_1.Children(2).Children(10).Children(4).Children.Data) str2double(right_4cm_1.Children(2).Children(10).Children(6).Children.Data) str2double(right_4cm_1.Children(2).Children(10).Children(8).Children.Data) str2double(right_4cm_1.Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm_1.Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm_1.Children(2).Children(10).Children(14).Children.Data) str2double(right_4cm_1.Children(2).Children(10).Children(16).Children.Data) str2double(right_4cm_1.Children(2).Children(10).Children(18).Children.Data) str2double(right_4cm_1.Children(2).Children(10).Children(20).Children.Data) str2double(right_4cm_1.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(right_4cm_2.Children(2).Children(10).Children(2).Children.Data) str2double(right_4cm_2.Children(2).Children(10).Children(4).Children.Data) str2double(right_4cm_2.Children(2).Children(10).Children(6).Children.Data) str2double(right_4cm_2.Children(2).Children(10).Children(8).Children.Data) str2double(right_4cm_2.Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm_2.Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm_2.Children(2).Children(10).Children(14).Children.Data) str2double(right_4cm_2.Children(2).Children(10).Children(16).Children.Data) str2double(right_4cm_2.Children(2).Children(10).Children(18).Children.Data) str2double(right_4cm_2.Children(2).Children(10).Children(20).Children.Data) str2double(right_4cm_2.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(right_4cm_3.Children(2).Children(10).Children(2).Children.Data) str2double(right_4cm_3.Children(2).Children(10).Children(4).Children.Data) str2double(right_4cm_3.Children(2).Children(10).Children(6).Children.Data) str2double(right_4cm_3.Children(2).Children(10).Children(8).Children.Data) str2double(right_4cm_3.Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm_3.Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm_3.Children(2).Children(10).Children(14).Children.Data) str2double(right_4cm_3.Children(2).Children(10).Children(16).Children.Data) str2double(right_4cm_3.Children(2).Children(10).Children(18).Children.Data) str2double(right_4cm_3.Children(2).Children(10).Children(20).Children.Data) str2double(right_4cm_3.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(right_4cm_4.Children(2).Children(10).Children(2).Children.Data) str2double(right_4cm_4.Children(2).Children(10).Children(4).Children.Data) str2double(right_4cm_4.Children(2).Children(10).Children(6).Children.Data) str2double(right_4cm_4.Children(2).Children(10).Children(8).Children.Data) str2double(right_4cm_4.Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm_4.Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm_4.Children(2).Children(10).Children(14).Children.Data) str2double(right_4cm_4.Children(2).Children(10).Children(16).Children.Data) str2double(right_4cm_4.Children(2).Children(10).Children(18).Children.Data) str2double(right_4cm_4.Children(2).Children(10).Children(20).Children.Data) str2double(right_4cm_4.Children(2).Children(10).Children(22).Children.Data)
-                       str2double(right_4cm_5.Children(2).Children(10).Children(2).Children.Data) str2double(right_4cm_5.Children(2).Children(10).Children(4).Children.Data) str2double(right_4cm_5.Children(2).Children(10).Children(6).Children.Data) str2double(right_4cm_5.Children(2).Children(10).Children(8).Children.Data) str2double(right_4cm_5.Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm_5.Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm_5.Children(2).Children(10).Children(14).Children.Data) str2double(right_4cm_5.Children(2).Children(10).Children(16).Children.Data) str2double(right_4cm_5.Children(2).Children(10).Children(18).Children.Data) str2double(right_4cm_5.Children(2).Children(10).Children(20).Children.Data) str2double(right_4cm_5.Children(2).Children(10).Children(22).Children.Data)];
+a_right_4cm =  [str2double(right_4cm(1).Children(2).Children(10).Children(2).Children.Data) str2double(right_4cm(1).Children(2).Children(10).Children(4).Children.Data) str2double(right_4cm(1).Children(2).Children(10).Children(6).Children.Data) str2double(right_4cm(1).Children(2).Children(10).Children(8).Children.Data) str2double(right_4cm(1).Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm(1).Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm(1).Children(2).Children(10).Children(14).Children.Data) str2double(right_4cm(1).Children(2).Children(10).Children(16).Children.Data) str2double(right_4cm(1).Children(2).Children(10).Children(18).Children.Data) str2double(right_4cm(1).Children(2).Children(10).Children(20).Children.Data) str2double(right_4cm(1).Children(2).Children(10).Children(22).Children.Data)
+                str2double(right_4cm(2).Children(2).Children(10).Children(2).Children.Data) str2double(right_4cm(2).Children(2).Children(10).Children(4).Children.Data) str2double(right_4cm(2).Children(2).Children(10).Children(6).Children.Data) str2double(right_4cm(2).Children(2).Children(10).Children(8).Children.Data) str2double(right_4cm(2).Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm(2).Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm(2).Children(2).Children(10).Children(14).Children.Data) str2double(right_4cm(2).Children(2).Children(10).Children(16).Children.Data) str2double(right_4cm(2).Children(2).Children(10).Children(18).Children.Data) str2double(right_4cm(2).Children(2).Children(10).Children(20).Children.Data) str2double(right_4cm(2).Children(2).Children(10).Children(22).Children.Data)
+                str2double(right_4cm(3).Children(2).Children(10).Children(2).Children.Data) str2double(right_4cm(3).Children(2).Children(10).Children(4).Children.Data) str2double(right_4cm(3).Children(2).Children(10).Children(6).Children.Data) str2double(right_4cm(3).Children(2).Children(10).Children(8).Children.Data) str2double(right_4cm(3).Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm(3).Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm(3).Children(2).Children(10).Children(14).Children.Data) str2double(right_4cm(3).Children(2).Children(10).Children(16).Children.Data) str2double(right_4cm(3).Children(2).Children(10).Children(18).Children.Data) str2double(right_4cm(3).Children(2).Children(10).Children(20).Children.Data) str2double(right_4cm(3).Children(2).Children(10).Children(22).Children.Data)
+                str2double(right_4cm(4).Children(2).Children(10).Children(2).Children.Data) str2double(right_4cm(4).Children(2).Children(10).Children(4).Children.Data) str2double(right_4cm(4).Children(2).Children(10).Children(6).Children.Data) str2double(right_4cm(4).Children(2).Children(10).Children(8).Children.Data) str2double(right_4cm(4).Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm(4).Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm(4).Children(2).Children(10).Children(14).Children.Data) str2double(right_4cm(4).Children(2).Children(10).Children(16).Children.Data) str2double(right_4cm(4).Children(2).Children(10).Children(18).Children.Data) str2double(right_4cm(4).Children(2).Children(10).Children(20).Children.Data) str2double(right_4cm(4).Children(2).Children(10).Children(22).Children.Data)
+                str2double(right_4cm(5).Children(2).Children(10).Children(2).Children.Data) str2double(right_4cm(5).Children(2).Children(10).Children(4).Children.Data) str2double(right_4cm(5).Children(2).Children(10).Children(6).Children.Data) str2double(right_4cm(5).Children(2).Children(10).Children(8).Children.Data) str2double(right_4cm(5).Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm(5).Children(2).Children(10).Children(10).Children.Data) str2double(right_4cm(5).Children(2).Children(10).Children(14).Children.Data) str2double(right_4cm(5).Children(2).Children(10).Children(16).Children.Data) str2double(right_4cm(5).Children(2).Children(10).Children(18).Children.Data) str2double(right_4cm(5).Children(2).Children(10).Children(20).Children.Data) str2double(right_4cm(5).Children(2).Children(10).Children(22).Children.Data)];
                    
-p_left_2cm = [str2double(left_2cm_1.Children(2).Children(12).Children(2).Children.Data) str2double(left_2cm_1.Children(2).Children(12).Children(4).Children.Data) str2double(left_2cm_1.Children(2).Children(12).Children(6).Children.Data) str2double(left_2cm_1.Children(2).Children(12).Children(8).Children.Data) str2double(left_2cm_1.Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm_1.Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm_1.Children(2).Children(12).Children(14).Children.Data) str2double(left_2cm_1.Children(2).Children(12).Children(16).Children.Data) str2double(left_2cm_1.Children(2).Children(12).Children(18).Children.Data) str2double(left_2cm_1.Children(2).Children(12).Children(20).Children.Data) str2double(left_2cm_1.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(left_2cm_2.Children(2).Children(12).Children(2).Children.Data) str2double(left_2cm_2.Children(2).Children(12).Children(4).Children.Data) str2double(left_2cm_2.Children(2).Children(12).Children(6).Children.Data) str2double(left_2cm_2.Children(2).Children(12).Children(8).Children.Data) str2double(left_2cm_2.Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm_2.Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm_2.Children(2).Children(12).Children(14).Children.Data) str2double(left_2cm_2.Children(2).Children(12).Children(16).Children.Data) str2double(left_2cm_2.Children(2).Children(12).Children(18).Children.Data) str2double(left_2cm_2.Children(2).Children(12).Children(20).Children.Data) str2double(left_2cm_2.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(left_2cm_3.Children(2).Children(12).Children(2).Children.Data) str2double(left_2cm_3.Children(2).Children(12).Children(4).Children.Data) str2double(left_2cm_3.Children(2).Children(12).Children(6).Children.Data) str2double(left_2cm_3.Children(2).Children(12).Children(8).Children.Data) str2double(left_2cm_3.Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm_3.Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm_3.Children(2).Children(12).Children(14).Children.Data) str2double(left_2cm_3.Children(2).Children(12).Children(16).Children.Data) str2double(left_2cm_3.Children(2).Children(12).Children(18).Children.Data) str2double(left_2cm_3.Children(2).Children(12).Children(20).Children.Data) str2double(left_2cm_3.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(left_2cm_4.Children(2).Children(12).Children(2).Children.Data) str2double(left_2cm_4.Children(2).Children(12).Children(4).Children.Data) str2double(left_2cm_4.Children(2).Children(12).Children(6).Children.Data) str2double(left_2cm_4.Children(2).Children(12).Children(8).Children.Data) str2double(left_2cm_4.Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm_4.Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm_4.Children(2).Children(12).Children(14).Children.Data) str2double(left_2cm_4.Children(2).Children(12).Children(16).Children.Data) str2double(left_2cm_4.Children(2).Children(12).Children(18).Children.Data) str2double(left_2cm_4.Children(2).Children(12).Children(20).Children.Data) str2double(left_2cm_4.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(left_2cm_5.Children(2).Children(12).Children(2).Children.Data) str2double(left_2cm_5.Children(2).Children(12).Children(4).Children.Data) str2double(left_2cm_5.Children(2).Children(12).Children(6).Children.Data) str2double(left_2cm_5.Children(2).Children(12).Children(8).Children.Data) str2double(left_2cm_5.Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm_5.Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm_5.Children(2).Children(12).Children(14).Children.Data) str2double(left_2cm_5.Children(2).Children(12).Children(16).Children.Data) str2double(left_2cm_5.Children(2).Children(12).Children(18).Children.Data) str2double(left_2cm_5.Children(2).Children(12).Children(20).Children.Data) str2double(left_2cm_5.Children(2).Children(12).Children(22).Children.Data)];
+p_left_2cm =   [str2double(left_2cm(1).Children(2).Children(12).Children(2).Children.Data) str2double(left_2cm(1).Children(2).Children(12).Children(4).Children.Data) str2double(left_2cm(1).Children(2).Children(12).Children(6).Children.Data) str2double(left_2cm(1).Children(2).Children(12).Children(8).Children.Data) str2double(left_2cm(1).Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm(1).Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm(1).Children(2).Children(12).Children(14).Children.Data) str2double(left_2cm(1).Children(2).Children(12).Children(16).Children.Data) str2double(left_2cm(1).Children(2).Children(12).Children(18).Children.Data) str2double(left_2cm(1).Children(2).Children(12).Children(20).Children.Data) str2double(left_2cm(1).Children(2).Children(12).Children(22).Children.Data)
+                str2double(left_2cm(2).Children(2).Children(12).Children(2).Children.Data) str2double(left_2cm(2).Children(2).Children(12).Children(4).Children.Data) str2double(left_2cm(2).Children(2).Children(12).Children(6).Children.Data) str2double(left_2cm(2).Children(2).Children(12).Children(8).Children.Data) str2double(left_2cm(2).Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm(2).Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm(2).Children(2).Children(12).Children(14).Children.Data) str2double(left_2cm(2).Children(2).Children(12).Children(16).Children.Data) str2double(left_2cm(2).Children(2).Children(12).Children(18).Children.Data) str2double(left_2cm(2).Children(2).Children(12).Children(20).Children.Data) str2double(left_2cm(2).Children(2).Children(12).Children(22).Children.Data)
+                str2double(left_2cm(3).Children(2).Children(12).Children(2).Children.Data) str2double(left_2cm(3).Children(2).Children(12).Children(4).Children.Data) str2double(left_2cm(3).Children(2).Children(12).Children(6).Children.Data) str2double(left_2cm(3).Children(2).Children(12).Children(8).Children.Data) str2double(left_2cm(3).Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm(3).Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm(3).Children(2).Children(12).Children(14).Children.Data) str2double(left_2cm(3).Children(2).Children(12).Children(16).Children.Data) str2double(left_2cm(3).Children(2).Children(12).Children(18).Children.Data) str2double(left_2cm(3).Children(2).Children(12).Children(20).Children.Data) str2double(left_2cm(3).Children(2).Children(12).Children(22).Children.Data)
+                str2double(left_2cm(4).Children(2).Children(12).Children(2).Children.Data) str2double(left_2cm(4).Children(2).Children(12).Children(4).Children.Data) str2double(left_2cm(4).Children(2).Children(12).Children(6).Children.Data) str2double(left_2cm(4).Children(2).Children(12).Children(8).Children.Data) str2double(left_2cm(4).Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm(4).Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm(4).Children(2).Children(12).Children(14).Children.Data) str2double(left_2cm(4).Children(2).Children(12).Children(16).Children.Data) str2double(left_2cm(4).Children(2).Children(12).Children(18).Children.Data) str2double(left_2cm(4).Children(2).Children(12).Children(20).Children.Data) str2double(left_2cm(4).Children(2).Children(12).Children(22).Children.Data)
+                str2double(left_2cm(5).Children(2).Children(12).Children(2).Children.Data) str2double(left_2cm(5).Children(2).Children(12).Children(4).Children.Data) str2double(left_2cm(5).Children(2).Children(12).Children(6).Children.Data) str2double(left_2cm(5).Children(2).Children(12).Children(8).Children.Data) str2double(left_2cm(5).Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm(5).Children(2).Children(12).Children(12).Children.Data) str2double(left_2cm(5).Children(2).Children(12).Children(14).Children.Data) str2double(left_2cm(5).Children(2).Children(12).Children(16).Children.Data) str2double(left_2cm(5).Children(2).Children(12).Children(18).Children.Data) str2double(left_2cm(5).Children(2).Children(12).Children(20).Children.Data) str2double(left_2cm(5).Children(2).Children(12).Children(22).Children.Data)];
 
-p_right_2cm = [str2double(right_2cm_1.Children(2).Children(12).Children(2).Children.Data) str2double(right_2cm_1.Children(2).Children(12).Children(4).Children.Data) str2double(right_2cm_1.Children(2).Children(12).Children(6).Children.Data) str2double(right_2cm_1.Children(2).Children(12).Children(8).Children.Data) str2double(right_2cm_1.Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm_1.Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm_1.Children(2).Children(12).Children(14).Children.Data) str2double(right_2cm_1.Children(2).Children(12).Children(16).Children.Data) str2double(right_2cm_1.Children(2).Children(12).Children(18).Children.Data) str2double(right_2cm_1.Children(2).Children(12).Children(20).Children.Data) str2double(right_2cm_1.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(right_2cm_2.Children(2).Children(12).Children(2).Children.Data) str2double(right_2cm_2.Children(2).Children(12).Children(4).Children.Data) str2double(right_2cm_2.Children(2).Children(12).Children(6).Children.Data) str2double(right_2cm_2.Children(2).Children(12).Children(8).Children.Data) str2double(right_2cm_2.Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm_2.Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm_2.Children(2).Children(12).Children(14).Children.Data) str2double(right_2cm_2.Children(2).Children(12).Children(16).Children.Data) str2double(right_2cm_2.Children(2).Children(12).Children(18).Children.Data) str2double(right_2cm_2.Children(2).Children(12).Children(20).Children.Data) str2double(right_2cm_2.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(right_2cm_3.Children(2).Children(12).Children(2).Children.Data) str2double(right_2cm_3.Children(2).Children(12).Children(4).Children.Data) str2double(right_2cm_3.Children(2).Children(12).Children(6).Children.Data) str2double(right_2cm_3.Children(2).Children(12).Children(8).Children.Data) str2double(right_2cm_3.Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm_3.Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm_3.Children(2).Children(12).Children(14).Children.Data) str2double(right_2cm_3.Children(2).Children(12).Children(16).Children.Data) str2double(right_2cm_3.Children(2).Children(12).Children(18).Children.Data) str2double(right_2cm_3.Children(2).Children(12).Children(20).Children.Data) str2double(right_2cm_3.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(right_2cm_4.Children(2).Children(12).Children(2).Children.Data) str2double(right_2cm_4.Children(2).Children(12).Children(4).Children.Data) str2double(right_2cm_4.Children(2).Children(12).Children(6).Children.Data) str2double(right_2cm_4.Children(2).Children(12).Children(8).Children.Data) str2double(right_2cm_4.Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm_4.Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm_4.Children(2).Children(12).Children(14).Children.Data) str2double(right_2cm_4.Children(2).Children(12).Children(16).Children.Data) str2double(right_2cm_4.Children(2).Children(12).Children(18).Children.Data) str2double(right_2cm_4.Children(2).Children(12).Children(20).Children.Data) str2double(right_2cm_4.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(right_2cm_5.Children(2).Children(12).Children(2).Children.Data) str2double(right_2cm_5.Children(2).Children(12).Children(4).Children.Data) str2double(right_2cm_5.Children(2).Children(12).Children(6).Children.Data) str2double(right_2cm_5.Children(2).Children(12).Children(8).Children.Data) str2double(right_2cm_5.Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm_5.Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm_5.Children(2).Children(12).Children(14).Children.Data) str2double(right_2cm_5.Children(2).Children(12).Children(16).Children.Data) str2double(right_2cm_5.Children(2).Children(12).Children(18).Children.Data) str2double(right_2cm_5.Children(2).Children(12).Children(20).Children.Data) str2double(right_2cm_5.Children(2).Children(12).Children(22).Children.Data)];
+p_right_2cm =  [str2double(right_2cm(1).Children(2).Children(12).Children(2).Children.Data) str2double(right_2cm(1).Children(2).Children(12).Children(4).Children.Data) str2double(right_2cm(1).Children(2).Children(12).Children(6).Children.Data) str2double(right_2cm(1).Children(2).Children(12).Children(8).Children.Data) str2double(right_2cm(1).Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm(1).Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm(1).Children(2).Children(12).Children(14).Children.Data) str2double(right_2cm(1).Children(2).Children(12).Children(16).Children.Data) str2double(right_2cm(1).Children(2).Children(12).Children(18).Children.Data) str2double(right_2cm(1).Children(2).Children(12).Children(20).Children.Data) str2double(right_2cm(1).Children(2).Children(12).Children(22).Children.Data)
+                str2double(right_2cm(2).Children(2).Children(12).Children(2).Children.Data) str2double(right_2cm(2).Children(2).Children(12).Children(4).Children.Data) str2double(right_2cm(2).Children(2).Children(12).Children(6).Children.Data) str2double(right_2cm(2).Children(2).Children(12).Children(8).Children.Data) str2double(right_2cm(2).Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm(2).Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm(2).Children(2).Children(12).Children(14).Children.Data) str2double(right_2cm(2).Children(2).Children(12).Children(16).Children.Data) str2double(right_2cm(2).Children(2).Children(12).Children(18).Children.Data) str2double(right_2cm(2).Children(2).Children(12).Children(20).Children.Data) str2double(right_2cm(2).Children(2).Children(12).Children(22).Children.Data)
+                str2double(right_2cm(3).Children(2).Children(12).Children(2).Children.Data) str2double(right_2cm(3).Children(2).Children(12).Children(4).Children.Data) str2double(right_2cm(3).Children(2).Children(12).Children(6).Children.Data) str2double(right_2cm(3).Children(2).Children(12).Children(8).Children.Data) str2double(right_2cm(3).Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm(3).Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm(3).Children(2).Children(12).Children(14).Children.Data) str2double(right_2cm(3).Children(2).Children(12).Children(16).Children.Data) str2double(right_2cm(3).Children(2).Children(12).Children(18).Children.Data) str2double(right_2cm(3).Children(2).Children(12).Children(20).Children.Data) str2double(right_2cm(3).Children(2).Children(12).Children(22).Children.Data)
+                str2double(right_2cm(4).Children(2).Children(12).Children(2).Children.Data) str2double(right_2cm(4).Children(2).Children(12).Children(4).Children.Data) str2double(right_2cm(4).Children(2).Children(12).Children(6).Children.Data) str2double(right_2cm(4).Children(2).Children(12).Children(8).Children.Data) str2double(right_2cm(4).Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm(4).Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm(4).Children(2).Children(12).Children(14).Children.Data) str2double(right_2cm(4).Children(2).Children(12).Children(16).Children.Data) str2double(right_2cm(4).Children(2).Children(12).Children(18).Children.Data) str2double(right_2cm(4).Children(2).Children(12).Children(20).Children.Data) str2double(right_2cm(4).Children(2).Children(12).Children(22).Children.Data)
+                str2double(right_2cm(5).Children(2).Children(12).Children(2).Children.Data) str2double(right_2cm(5).Children(2).Children(12).Children(4).Children.Data) str2double(right_2cm(5).Children(2).Children(12).Children(6).Children.Data) str2double(right_2cm(5).Children(2).Children(12).Children(8).Children.Data) str2double(right_2cm(5).Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm(5).Children(2).Children(12).Children(12).Children.Data) str2double(right_2cm(5).Children(2).Children(12).Children(14).Children.Data) str2double(right_2cm(5).Children(2).Children(12).Children(16).Children.Data) str2double(right_2cm(5).Children(2).Children(12).Children(18).Children.Data) str2double(right_2cm(5).Children(2).Children(12).Children(20).Children.Data) str2double(right_2cm(5).Children(2).Children(12).Children(22).Children.Data)];
                    
-p_left_4cm = [str2double(left_4cm_1.Children(2).Children(12).Children(2).Children.Data) str2double(left_4cm_1.Children(2).Children(12).Children(4).Children.Data) str2double(left_4cm_1.Children(2).Children(12).Children(6).Children.Data) str2double(left_4cm_1.Children(2).Children(12).Children(8).Children.Data) str2double(left_4cm_1.Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm_1.Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm_1.Children(2).Children(12).Children(14).Children.Data) str2double(left_4cm_1.Children(2).Children(12).Children(16).Children.Data) str2double(left_4cm_1.Children(2).Children(12).Children(18).Children.Data) str2double(left_4cm_1.Children(2).Children(12).Children(20).Children.Data) str2double(left_4cm_1.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(left_4cm_2.Children(2).Children(12).Children(2).Children.Data) str2double(left_4cm_2.Children(2).Children(12).Children(4).Children.Data) str2double(left_4cm_2.Children(2).Children(12).Children(6).Children.Data) str2double(left_4cm_2.Children(2).Children(12).Children(8).Children.Data) str2double(left_4cm_2.Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm_2.Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm_2.Children(2).Children(12).Children(14).Children.Data) str2double(left_4cm_2.Children(2).Children(12).Children(16).Children.Data) str2double(left_4cm_2.Children(2).Children(12).Children(18).Children.Data) str2double(left_4cm_2.Children(2).Children(12).Children(20).Children.Data) str2double(left_4cm_2.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(left_4cm_3.Children(2).Children(12).Children(2).Children.Data) str2double(left_4cm_3.Children(2).Children(12).Children(4).Children.Data) str2double(left_4cm_3.Children(2).Children(12).Children(6).Children.Data) str2double(left_4cm_3.Children(2).Children(12).Children(8).Children.Data) str2double(left_4cm_3.Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm_3.Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm_3.Children(2).Children(12).Children(14).Children.Data) str2double(left_4cm_3.Children(2).Children(12).Children(16).Children.Data) str2double(left_4cm_3.Children(2).Children(12).Children(18).Children.Data) str2double(left_4cm_3.Children(2).Children(12).Children(20).Children.Data) str2double(left_4cm_3.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(left_4cm_4.Children(2).Children(12).Children(2).Children.Data) str2double(left_4cm_4.Children(2).Children(12).Children(4).Children.Data) str2double(left_4cm_4.Children(2).Children(12).Children(6).Children.Data) str2double(left_4cm_4.Children(2).Children(12).Children(8).Children.Data) str2double(left_4cm_4.Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm_4.Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm_4.Children(2).Children(12).Children(14).Children.Data) str2double(left_4cm_4.Children(2).Children(12).Children(16).Children.Data) str2double(left_4cm_4.Children(2).Children(12).Children(18).Children.Data) str2double(left_4cm_4.Children(2).Children(12).Children(20).Children.Data) str2double(left_4cm_4.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(left_4cm_5.Children(2).Children(12).Children(2).Children.Data) str2double(left_4cm_5.Children(2).Children(12).Children(4).Children.Data) str2double(left_4cm_5.Children(2).Children(12).Children(6).Children.Data) str2double(left_4cm_5.Children(2).Children(12).Children(8).Children.Data) str2double(left_4cm_5.Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm_5.Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm_5.Children(2).Children(12).Children(14).Children.Data) str2double(left_4cm_5.Children(2).Children(12).Children(16).Children.Data) str2double(left_4cm_5.Children(2).Children(12).Children(18).Children.Data) str2double(left_4cm_5.Children(2).Children(12).Children(20).Children.Data) str2double(left_4cm_5.Children(2).Children(12).Children(22).Children.Data)];
+p_left_4cm =   [str2double(left_4cm(1).Children(2).Children(12).Children(2).Children.Data) str2double(left_4cm(1).Children(2).Children(12).Children(4).Children.Data) str2double(left_4cm(1).Children(2).Children(12).Children(6).Children.Data) str2double(left_4cm(1).Children(2).Children(12).Children(8).Children.Data) str2double(left_4cm(1).Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm(1).Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm(1).Children(2).Children(12).Children(14).Children.Data) str2double(left_4cm(1).Children(2).Children(12).Children(16).Children.Data) str2double(left_4cm(1).Children(2).Children(12).Children(18).Children.Data) str2double(left_4cm(1).Children(2).Children(12).Children(20).Children.Data) str2double(left_4cm(1).Children(2).Children(12).Children(22).Children.Data)
+                str2double(left_4cm(2).Children(2).Children(12).Children(2).Children.Data) str2double(left_4cm(2).Children(2).Children(12).Children(4).Children.Data) str2double(left_4cm(2).Children(2).Children(12).Children(6).Children.Data) str2double(left_4cm(2).Children(2).Children(12).Children(8).Children.Data) str2double(left_4cm(2).Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm(2).Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm(2).Children(2).Children(12).Children(14).Children.Data) str2double(left_4cm(2).Children(2).Children(12).Children(16).Children.Data) str2double(left_4cm(2).Children(2).Children(12).Children(18).Children.Data) str2double(left_4cm(2).Children(2).Children(12).Children(20).Children.Data) str2double(left_4cm(2).Children(2).Children(12).Children(22).Children.Data)
+                str2double(left_4cm(3).Children(2).Children(12).Children(2).Children.Data) str2double(left_4cm(3).Children(2).Children(12).Children(4).Children.Data) str2double(left_4cm(3).Children(2).Children(12).Children(6).Children.Data) str2double(left_4cm(3).Children(2).Children(12).Children(8).Children.Data) str2double(left_4cm(3).Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm(3).Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm(3).Children(2).Children(12).Children(14).Children.Data) str2double(left_4cm(3).Children(2).Children(12).Children(16).Children.Data) str2double(left_4cm(3).Children(2).Children(12).Children(18).Children.Data) str2double(left_4cm(3).Children(2).Children(12).Children(20).Children.Data) str2double(left_4cm(3).Children(2).Children(12).Children(22).Children.Data)
+                str2double(left_4cm(4).Children(2).Children(12).Children(2).Children.Data) str2double(left_4cm(4).Children(2).Children(12).Children(4).Children.Data) str2double(left_4cm(4).Children(2).Children(12).Children(6).Children.Data) str2double(left_4cm(4).Children(2).Children(12).Children(8).Children.Data) str2double(left_4cm(4).Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm(4).Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm(4).Children(2).Children(12).Children(14).Children.Data) str2double(left_4cm(4).Children(2).Children(12).Children(16).Children.Data) str2double(left_4cm(4).Children(2).Children(12).Children(18).Children.Data) str2double(left_4cm(4).Children(2).Children(12).Children(20).Children.Data) str2double(left_4cm(4).Children(2).Children(12).Children(22).Children.Data)
+                str2double(left_4cm(5).Children(2).Children(12).Children(2).Children.Data) str2double(left_4cm(5).Children(2).Children(12).Children(4).Children.Data) str2double(left_4cm(5).Children(2).Children(12).Children(6).Children.Data) str2double(left_4cm(5).Children(2).Children(12).Children(8).Children.Data) str2double(left_4cm(5).Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm(5).Children(2).Children(12).Children(12).Children.Data) str2double(left_4cm(5).Children(2).Children(12).Children(14).Children.Data) str2double(left_4cm(5).Children(2).Children(12).Children(16).Children.Data) str2double(left_4cm(5).Children(2).Children(12).Children(18).Children.Data) str2double(left_4cm(5).Children(2).Children(12).Children(20).Children.Data) str2double(left_4cm(5).Children(2).Children(12).Children(22).Children.Data)];
                    
-p_right_4cm = [str2double(right_4cm_1.Children(2).Children(12).Children(2).Children.Data) str2double(right_4cm_1.Children(2).Children(12).Children(4).Children.Data) str2double(right_4cm_1.Children(2).Children(12).Children(6).Children.Data) str2double(right_4cm_1.Children(2).Children(12).Children(8).Children.Data) str2double(right_4cm_1.Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm_1.Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm_1.Children(2).Children(12).Children(14).Children.Data) str2double(right_4cm_1.Children(2).Children(12).Children(16).Children.Data) str2double(right_4cm_1.Children(2).Children(12).Children(18).Children.Data) str2double(right_4cm_1.Children(2).Children(12).Children(20).Children.Data) str2double(right_4cm_1.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(right_4cm_2.Children(2).Children(12).Children(2).Children.Data) str2double(right_4cm_2.Children(2).Children(12).Children(4).Children.Data) str2double(right_4cm_2.Children(2).Children(12).Children(6).Children.Data) str2double(right_4cm_2.Children(2).Children(12).Children(8).Children.Data) str2double(right_4cm_2.Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm_2.Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm_2.Children(2).Children(12).Children(14).Children.Data) str2double(right_4cm_2.Children(2).Children(12).Children(16).Children.Data) str2double(right_4cm_2.Children(2).Children(12).Children(18).Children.Data) str2double(right_4cm_2.Children(2).Children(12).Children(20).Children.Data) str2double(right_4cm_2.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(right_4cm_3.Children(2).Children(12).Children(2).Children.Data) str2double(right_4cm_3.Children(2).Children(12).Children(4).Children.Data) str2double(right_4cm_3.Children(2).Children(12).Children(6).Children.Data) str2double(right_4cm_3.Children(2).Children(12).Children(8).Children.Data) str2double(right_4cm_3.Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm_3.Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm_3.Children(2).Children(12).Children(14).Children.Data) str2double(right_4cm_3.Children(2).Children(12).Children(16).Children.Data) str2double(right_4cm_3.Children(2).Children(12).Children(18).Children.Data) str2double(right_4cm_3.Children(2).Children(12).Children(20).Children.Data) str2double(right_4cm_3.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(right_4cm_4.Children(2).Children(12).Children(2).Children.Data) str2double(right_4cm_4.Children(2).Children(12).Children(4).Children.Data) str2double(right_4cm_4.Children(2).Children(12).Children(6).Children.Data) str2double(right_4cm_4.Children(2).Children(12).Children(8).Children.Data) str2double(right_4cm_4.Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm_4.Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm_4.Children(2).Children(12).Children(14).Children.Data) str2double(right_4cm_4.Children(2).Children(12).Children(16).Children.Data) str2double(right_4cm_4.Children(2).Children(12).Children(18).Children.Data) str2double(right_4cm_4.Children(2).Children(12).Children(20).Children.Data) str2double(right_4cm_4.Children(2).Children(12).Children(22).Children.Data)
-                       str2double(right_4cm_5.Children(2).Children(12).Children(2).Children.Data) str2double(right_4cm_5.Children(2).Children(12).Children(4).Children.Data) str2double(right_4cm_5.Children(2).Children(12).Children(6).Children.Data) str2double(right_4cm_5.Children(2).Children(12).Children(8).Children.Data) str2double(right_4cm_5.Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm_5.Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm_5.Children(2).Children(12).Children(14).Children.Data) str2double(right_4cm_5.Children(2).Children(12).Children(16).Children.Data) str2double(right_4cm_5.Children(2).Children(12).Children(18).Children.Data) str2double(right_4cm_5.Children(2).Children(12).Children(20).Children.Data) str2double(right_4cm_5.Children(2).Children(12).Children(22).Children.Data)];
+p_right_4cm =  [str2double(right_4cm(1).Children(2).Children(12).Children(2).Children.Data) str2double(right_4cm(1).Children(2).Children(12).Children(4).Children.Data) str2double(right_4cm(1).Children(2).Children(12).Children(6).Children.Data) str2double(right_4cm(1).Children(2).Children(12).Children(8).Children.Data) str2double(right_4cm(1).Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm(1).Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm(1).Children(2).Children(12).Children(14).Children.Data) str2double(right_4cm(1).Children(2).Children(12).Children(16).Children.Data) str2double(right_4cm(1).Children(2).Children(12).Children(18).Children.Data) str2double(right_4cm(1).Children(2).Children(12).Children(20).Children.Data) str2double(right_4cm(1).Children(2).Children(12).Children(22).Children.Data)
+                str2double(right_4cm(2).Children(2).Children(12).Children(2).Children.Data) str2double(right_4cm(2).Children(2).Children(12).Children(4).Children.Data) str2double(right_4cm(2).Children(2).Children(12).Children(6).Children.Data) str2double(right_4cm(2).Children(2).Children(12).Children(8).Children.Data) str2double(right_4cm(2).Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm(2).Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm(2).Children(2).Children(12).Children(14).Children.Data) str2double(right_4cm(2).Children(2).Children(12).Children(16).Children.Data) str2double(right_4cm(2).Children(2).Children(12).Children(18).Children.Data) str2double(right_4cm(2).Children(2).Children(12).Children(20).Children.Data) str2double(right_4cm(2).Children(2).Children(12).Children(22).Children.Data)
+                str2double(right_4cm(3).Children(2).Children(12).Children(2).Children.Data) str2double(right_4cm(3).Children(2).Children(12).Children(4).Children.Data) str2double(right_4cm(3).Children(2).Children(12).Children(6).Children.Data) str2double(right_4cm(3).Children(2).Children(12).Children(8).Children.Data) str2double(right_4cm(3).Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm(3).Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm(3).Children(2).Children(12).Children(14).Children.Data) str2double(right_4cm(3).Children(2).Children(12).Children(16).Children.Data) str2double(right_4cm(3).Children(2).Children(12).Children(18).Children.Data) str2double(right_4cm(3).Children(2).Children(12).Children(20).Children.Data) str2double(right_4cm(3).Children(2).Children(12).Children(22).Children.Data)
+                str2double(right_4cm(4).Children(2).Children(12).Children(2).Children.Data) str2double(right_4cm(4).Children(2).Children(12).Children(4).Children.Data) str2double(right_4cm(4).Children(2).Children(12).Children(6).Children.Data) str2double(right_4cm(4).Children(2).Children(12).Children(8).Children.Data) str2double(right_4cm(4).Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm(4).Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm(4).Children(2).Children(12).Children(14).Children.Data) str2double(right_4cm(4).Children(2).Children(12).Children(16).Children.Data) str2double(right_4cm(4).Children(2).Children(12).Children(18).Children.Data) str2double(right_4cm(4).Children(2).Children(12).Children(20).Children.Data) str2double(right_4cm(4).Children(2).Children(12).Children(22).Children.Data)
+                str2double(right_4cm(5).Children(2).Children(12).Children(2).Children.Data) str2double(right_4cm(5).Children(2).Children(12).Children(4).Children.Data) str2double(right_4cm(5).Children(2).Children(12).Children(6).Children.Data) str2double(right_4cm(5).Children(2).Children(12).Children(8).Children.Data) str2double(right_4cm(5).Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm(5).Children(2).Children(12).Children(12).Children.Data) str2double(right_4cm(5).Children(2).Children(12).Children(14).Children.Data) str2double(right_4cm(5).Children(2).Children(12).Children(16).Children.Data) str2double(right_4cm(5).Children(2).Children(12).Children(18).Children.Data) str2double(right_4cm(5).Children(2).Children(12).Children(20).Children.Data) str2double(right_4cm(5).Children(2).Children(12).Children(22).Children.Data)];
                    
-ar_left_2cm = [str2double(left_2cm_1.Children(2).Children(14).Children(2).Children.Data) str2double(left_2cm_1.Children(2).Children(14).Children(4).Children.Data) str2double(left_2cm_1.Children(2).Children(14).Children(6).Children.Data) str2double(left_2cm_1.Children(2).Children(14).Children(8).Children.Data) str2double(left_2cm_1.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_1.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_1.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_1.Children(2).Children(14).Children(16).Children.Data) str2double(left_2cm_1.Children(2).Children(14).Children(18).Children.Data) str2double(left_2cm_1.Children(2).Children(14).Children(20).Children.Data) str2double(left_2cm_1.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(left_2cm_2.Children(2).Children(14).Children(2).Children.Data) str2double(left_2cm_2.Children(2).Children(14).Children(4).Children.Data) str2double(left_2cm_2.Children(2).Children(14).Children(6).Children.Data) str2double(left_2cm_2.Children(2).Children(14).Children(8).Children.Data) str2double(left_2cm_2.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_2.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_2.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_2.Children(2).Children(14).Children(16).Children.Data) str2double(left_2cm_2.Children(2).Children(14).Children(18).Children.Data) str2double(left_2cm_2.Children(2).Children(14).Children(20).Children.Data) str2double(left_2cm_2.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(left_2cm_3.Children(2).Children(14).Children(2).Children.Data) str2double(left_2cm_3.Children(2).Children(14).Children(4).Children.Data) str2double(left_2cm_3.Children(2).Children(14).Children(6).Children.Data) str2double(left_2cm_3.Children(2).Children(14).Children(8).Children.Data) str2double(left_2cm_3.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_3.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_3.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_3.Children(2).Children(14).Children(16).Children.Data) str2double(left_2cm_3.Children(2).Children(14).Children(18).Children.Data) str2double(left_2cm_3.Children(2).Children(14).Children(20).Children.Data) str2double(left_2cm_3.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(left_2cm_4.Children(2).Children(14).Children(2).Children.Data) str2double(left_2cm_4.Children(2).Children(14).Children(4).Children.Data) str2double(left_2cm_4.Children(2).Children(14).Children(6).Children.Data) str2double(left_2cm_4.Children(2).Children(14).Children(8).Children.Data) str2double(left_2cm_4.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_4.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_4.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_4.Children(2).Children(14).Children(16).Children.Data) str2double(left_2cm_4.Children(2).Children(14).Children(18).Children.Data) str2double(left_2cm_4.Children(2).Children(14).Children(20).Children.Data) str2double(left_2cm_4.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(left_2cm_5.Children(2).Children(14).Children(2).Children.Data) str2double(left_2cm_5.Children(2).Children(14).Children(4).Children.Data) str2double(left_2cm_5.Children(2).Children(14).Children(6).Children.Data) str2double(left_2cm_5.Children(2).Children(14).Children(8).Children.Data) str2double(left_2cm_5.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_5.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_5.Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm_5.Children(2).Children(14).Children(16).Children.Data) str2double(left_2cm_5.Children(2).Children(14).Children(18).Children.Data) str2double(left_2cm_5.Children(2).Children(14).Children(20).Children.Data) str2double(left_2cm_5.Children(2).Children(14).Children(22).Children.Data)];
+ar_left_2cm =  [str2double(left_2cm(1).Children(2).Children(14).Children(2).Children.Data) str2double(left_2cm(1).Children(2).Children(14).Children(4).Children.Data) str2double(left_2cm(1).Children(2).Children(14).Children(6).Children.Data) str2double(left_2cm(1).Children(2).Children(14).Children(8).Children.Data) str2double(left_2cm(1).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(1).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(1).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(1).Children(2).Children(14).Children(16).Children.Data) str2double(left_2cm(1).Children(2).Children(14).Children(18).Children.Data) str2double(left_2cm(1).Children(2).Children(14).Children(20).Children.Data) str2double(left_2cm(1).Children(2).Children(14).Children(22).Children.Data)
+                str2double(left_2cm(2).Children(2).Children(14).Children(2).Children.Data) str2double(left_2cm(2).Children(2).Children(14).Children(4).Children.Data) str2double(left_2cm(2).Children(2).Children(14).Children(6).Children.Data) str2double(left_2cm(2).Children(2).Children(14).Children(8).Children.Data) str2double(left_2cm(2).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(2).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(2).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(2).Children(2).Children(14).Children(16).Children.Data) str2double(left_2cm(2).Children(2).Children(14).Children(18).Children.Data) str2double(left_2cm(2).Children(2).Children(14).Children(20).Children.Data) str2double(left_2cm(2).Children(2).Children(14).Children(22).Children.Data)
+                str2double(left_2cm(3).Children(2).Children(14).Children(2).Children.Data) str2double(left_2cm(3).Children(2).Children(14).Children(4).Children.Data) str2double(left_2cm(3).Children(2).Children(14).Children(6).Children.Data) str2double(left_2cm(3).Children(2).Children(14).Children(8).Children.Data) str2double(left_2cm(3).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(3).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(3).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(3).Children(2).Children(14).Children(16).Children.Data) str2double(left_2cm(3).Children(2).Children(14).Children(18).Children.Data) str2double(left_2cm(3).Children(2).Children(14).Children(20).Children.Data) str2double(left_2cm(3).Children(2).Children(14).Children(22).Children.Data)
+                str2double(left_2cm(4).Children(2).Children(14).Children(2).Children.Data) str2double(left_2cm(4).Children(2).Children(14).Children(4).Children.Data) str2double(left_2cm(4).Children(2).Children(14).Children(6).Children.Data) str2double(left_2cm(4).Children(2).Children(14).Children(8).Children.Data) str2double(left_2cm(4).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(4).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(4).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(4).Children(2).Children(14).Children(16).Children.Data) str2double(left_2cm(4).Children(2).Children(14).Children(18).Children.Data) str2double(left_2cm(4).Children(2).Children(14).Children(20).Children.Data) str2double(left_2cm(4).Children(2).Children(14).Children(22).Children.Data)
+                str2double(left_2cm(5).Children(2).Children(14).Children(2).Children.Data) str2double(left_2cm(5).Children(2).Children(14).Children(4).Children.Data) str2double(left_2cm(5).Children(2).Children(14).Children(6).Children.Data) str2double(left_2cm(5).Children(2).Children(14).Children(8).Children.Data) str2double(left_2cm(5).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(5).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(5).Children(2).Children(14).Children(14).Children.Data) str2double(left_2cm(5).Children(2).Children(14).Children(16).Children.Data) str2double(left_2cm(5).Children(2).Children(14).Children(18).Children.Data) str2double(left_2cm(5).Children(2).Children(14).Children(20).Children.Data) str2double(left_2cm(5).Children(2).Children(14).Children(22).Children.Data)];
 
-ar_right_2cm = [str2double(right_2cm_1.Children(2).Children(14).Children(2).Children.Data) str2double(right_2cm_1.Children(2).Children(14).Children(4).Children.Data) str2double(right_2cm_1.Children(2).Children(14).Children(6).Children.Data) str2double(right_2cm_1.Children(2).Children(14).Children(8).Children.Data) str2double(right_2cm_1.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_1.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_1.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_1.Children(2).Children(14).Children(16).Children.Data) str2double(right_2cm_1.Children(2).Children(14).Children(18).Children.Data) str2double(right_2cm_1.Children(2).Children(14).Children(20).Children.Data) str2double(right_2cm_1.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(right_2cm_2.Children(2).Children(14).Children(2).Children.Data) str2double(right_2cm_2.Children(2).Children(14).Children(4).Children.Data) str2double(right_2cm_2.Children(2).Children(14).Children(6).Children.Data) str2double(right_2cm_2.Children(2).Children(14).Children(8).Children.Data) str2double(right_2cm_2.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_2.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_2.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_2.Children(2).Children(14).Children(16).Children.Data) str2double(right_2cm_2.Children(2).Children(14).Children(18).Children.Data) str2double(right_2cm_2.Children(2).Children(14).Children(20).Children.Data) str2double(right_2cm_2.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(right_2cm_3.Children(2).Children(14).Children(2).Children.Data) str2double(right_2cm_3.Children(2).Children(14).Children(4).Children.Data) str2double(right_2cm_3.Children(2).Children(14).Children(6).Children.Data) str2double(right_2cm_3.Children(2).Children(14).Children(8).Children.Data) str2double(right_2cm_3.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_3.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_3.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_3.Children(2).Children(14).Children(16).Children.Data) str2double(right_2cm_3.Children(2).Children(14).Children(18).Children.Data) str2double(right_2cm_3.Children(2).Children(14).Children(20).Children.Data) str2double(right_2cm_3.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(right_2cm_4.Children(2).Children(14).Children(2).Children.Data) str2double(right_2cm_4.Children(2).Children(14).Children(4).Children.Data) str2double(right_2cm_4.Children(2).Children(14).Children(6).Children.Data) str2double(right_2cm_4.Children(2).Children(14).Children(8).Children.Data) str2double(right_2cm_4.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_4.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_4.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_4.Children(2).Children(14).Children(16).Children.Data) str2double(right_2cm_4.Children(2).Children(14).Children(18).Children.Data) str2double(right_2cm_4.Children(2).Children(14).Children(20).Children.Data) str2double(right_2cm_4.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(right_2cm_5.Children(2).Children(14).Children(2).Children.Data) str2double(right_2cm_5.Children(2).Children(14).Children(4).Children.Data) str2double(right_2cm_5.Children(2).Children(14).Children(6).Children.Data) str2double(right_2cm_5.Children(2).Children(14).Children(8).Children.Data) str2double(right_2cm_5.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_5.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_5.Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm_5.Children(2).Children(14).Children(16).Children.Data) str2double(right_2cm_5.Children(2).Children(14).Children(18).Children.Data) str2double(right_2cm_5.Children(2).Children(14).Children(20).Children.Data) str2double(right_2cm_5.Children(2).Children(14).Children(22).Children.Data)];
+ar_right_2cm = [str2double(right_2cm(1).Children(2).Children(14).Children(2).Children.Data) str2double(right_2cm(1).Children(2).Children(14).Children(4).Children.Data) str2double(right_2cm(1).Children(2).Children(14).Children(6).Children.Data) str2double(right_2cm(1).Children(2).Children(14).Children(8).Children.Data) str2double(right_2cm(1).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(1).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(1).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(1).Children(2).Children(14).Children(16).Children.Data) str2double(right_2cm(1).Children(2).Children(14).Children(18).Children.Data) str2double(right_2cm(1).Children(2).Children(14).Children(20).Children.Data) str2double(right_2cm(1).Children(2).Children(14).Children(22).Children.Data)
+                str2double(right_2cm(2).Children(2).Children(14).Children(2).Children.Data) str2double(right_2cm(2).Children(2).Children(14).Children(4).Children.Data) str2double(right_2cm(2).Children(2).Children(14).Children(6).Children.Data) str2double(right_2cm(2).Children(2).Children(14).Children(8).Children.Data) str2double(right_2cm(2).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(2).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(2).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(2).Children(2).Children(14).Children(16).Children.Data) str2double(right_2cm(2).Children(2).Children(14).Children(18).Children.Data) str2double(right_2cm(2).Children(2).Children(14).Children(20).Children.Data) str2double(right_2cm(2).Children(2).Children(14).Children(22).Children.Data)
+                str2double(right_2cm(3).Children(2).Children(14).Children(2).Children.Data) str2double(right_2cm(3).Children(2).Children(14).Children(4).Children.Data) str2double(right_2cm(3).Children(2).Children(14).Children(6).Children.Data) str2double(right_2cm(3).Children(2).Children(14).Children(8).Children.Data) str2double(right_2cm(3).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(3).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(3).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(3).Children(2).Children(14).Children(16).Children.Data) str2double(right_2cm(3).Children(2).Children(14).Children(18).Children.Data) str2double(right_2cm(3).Children(2).Children(14).Children(20).Children.Data) str2double(right_2cm(3).Children(2).Children(14).Children(22).Children.Data)
+                str2double(right_2cm(4).Children(2).Children(14).Children(2).Children.Data) str2double(right_2cm(4).Children(2).Children(14).Children(4).Children.Data) str2double(right_2cm(4).Children(2).Children(14).Children(6).Children.Data) str2double(right_2cm(4).Children(2).Children(14).Children(8).Children.Data) str2double(right_2cm(4).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(4).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(4).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(4).Children(2).Children(14).Children(16).Children.Data) str2double(right_2cm(4).Children(2).Children(14).Children(18).Children.Data) str2double(right_2cm(4).Children(2).Children(14).Children(20).Children.Data) str2double(right_2cm(4).Children(2).Children(14).Children(22).Children.Data)
+                str2double(right_2cm(5).Children(2).Children(14).Children(2).Children.Data) str2double(right_2cm(5).Children(2).Children(14).Children(4).Children.Data) str2double(right_2cm(5).Children(2).Children(14).Children(6).Children.Data) str2double(right_2cm(5).Children(2).Children(14).Children(8).Children.Data) str2double(right_2cm(5).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(5).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(5).Children(2).Children(14).Children(14).Children.Data) str2double(right_2cm(5).Children(2).Children(14).Children(16).Children.Data) str2double(right_2cm(5).Children(2).Children(14).Children(18).Children.Data) str2double(right_2cm(5).Children(2).Children(14).Children(20).Children.Data) str2double(right_2cm(5).Children(2).Children(14).Children(22).Children.Data)];
                    
-ar_left_4cm = [str2double(left_4cm_1.Children(2).Children(14).Children(2).Children.Data) str2double(left_4cm_1.Children(2).Children(14).Children(4).Children.Data) str2double(left_4cm_1.Children(2).Children(14).Children(6).Children.Data) str2double(left_4cm_1.Children(2).Children(14).Children(8).Children.Data) str2double(left_4cm_1.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_1.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_1.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_1.Children(2).Children(14).Children(16).Children.Data) str2double(left_4cm_1.Children(2).Children(14).Children(18).Children.Data) str2double(left_4cm_1.Children(2).Children(14).Children(20).Children.Data) str2double(left_4cm_1.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(left_4cm_2.Children(2).Children(14).Children(2).Children.Data) str2double(left_4cm_2.Children(2).Children(14).Children(4).Children.Data) str2double(left_4cm_2.Children(2).Children(14).Children(6).Children.Data) str2double(left_4cm_2.Children(2).Children(14).Children(8).Children.Data) str2double(left_4cm_2.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_2.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_2.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_2.Children(2).Children(14).Children(16).Children.Data) str2double(left_4cm_2.Children(2).Children(14).Children(18).Children.Data) str2double(left_4cm_2.Children(2).Children(14).Children(20).Children.Data) str2double(left_4cm_2.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(left_4cm_3.Children(2).Children(14).Children(2).Children.Data) str2double(left_4cm_3.Children(2).Children(14).Children(4).Children.Data) str2double(left_4cm_3.Children(2).Children(14).Children(6).Children.Data) str2double(left_4cm_3.Children(2).Children(14).Children(8).Children.Data) str2double(left_4cm_3.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_3.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_3.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_3.Children(2).Children(14).Children(16).Children.Data) str2double(left_4cm_3.Children(2).Children(14).Children(18).Children.Data) str2double(left_4cm_3.Children(2).Children(14).Children(20).Children.Data) str2double(left_4cm_3.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(left_4cm_4.Children(2).Children(14).Children(2).Children.Data) str2double(left_4cm_4.Children(2).Children(14).Children(4).Children.Data) str2double(left_4cm_4.Children(2).Children(14).Children(6).Children.Data) str2double(left_4cm_4.Children(2).Children(14).Children(8).Children.Data) str2double(left_4cm_4.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_4.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_4.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_4.Children(2).Children(14).Children(16).Children.Data) str2double(left_4cm_4.Children(2).Children(14).Children(18).Children.Data) str2double(left_4cm_4.Children(2).Children(14).Children(20).Children.Data) str2double(left_4cm_4.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(left_4cm_5.Children(2).Children(14).Children(2).Children.Data) str2double(left_4cm_5.Children(2).Children(14).Children(4).Children.Data) str2double(left_4cm_5.Children(2).Children(14).Children(6).Children.Data) str2double(left_4cm_5.Children(2).Children(14).Children(8).Children.Data) str2double(left_4cm_5.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_5.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_5.Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm_5.Children(2).Children(14).Children(16).Children.Data) str2double(left_4cm_5.Children(2).Children(14).Children(18).Children.Data) str2double(left_4cm_5.Children(2).Children(14).Children(20).Children.Data) str2double(left_4cm_5.Children(2).Children(14).Children(22).Children.Data)];
+ar_left_4cm =  [str2double(left_4cm(1).Children(2).Children(14).Children(2).Children.Data) str2double(left_4cm(1).Children(2).Children(14).Children(4).Children.Data) str2double(left_4cm(1).Children(2).Children(14).Children(6).Children.Data) str2double(left_4cm(1).Children(2).Children(14).Children(8).Children.Data) str2double(left_4cm(1).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(1).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(1).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(1).Children(2).Children(14).Children(16).Children.Data) str2double(left_4cm(1).Children(2).Children(14).Children(18).Children.Data) str2double(left_4cm(1).Children(2).Children(14).Children(20).Children.Data) str2double(left_4cm(1).Children(2).Children(14).Children(22).Children.Data)
+                str2double(left_4cm(2).Children(2).Children(14).Children(2).Children.Data) str2double(left_4cm(2).Children(2).Children(14).Children(4).Children.Data) str2double(left_4cm(2).Children(2).Children(14).Children(6).Children.Data) str2double(left_4cm(2).Children(2).Children(14).Children(8).Children.Data) str2double(left_4cm(2).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(2).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(2).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(2).Children(2).Children(14).Children(16).Children.Data) str2double(left_4cm(2).Children(2).Children(14).Children(18).Children.Data) str2double(left_4cm(2).Children(2).Children(14).Children(20).Children.Data) str2double(left_4cm(2).Children(2).Children(14).Children(22).Children.Data)
+                str2double(left_4cm(3).Children(2).Children(14).Children(2).Children.Data) str2double(left_4cm(3).Children(2).Children(14).Children(4).Children.Data) str2double(left_4cm(3).Children(2).Children(14).Children(6).Children.Data) str2double(left_4cm(3).Children(2).Children(14).Children(8).Children.Data) str2double(left_4cm(3).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(3).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(3).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(3).Children(2).Children(14).Children(16).Children.Data) str2double(left_4cm(3).Children(2).Children(14).Children(18).Children.Data) str2double(left_4cm(3).Children(2).Children(14).Children(20).Children.Data) str2double(left_4cm(3).Children(2).Children(14).Children(22).Children.Data)
+                str2double(left_4cm(4).Children(2).Children(14).Children(2).Children.Data) str2double(left_4cm(4).Children(2).Children(14).Children(4).Children.Data) str2double(left_4cm(4).Children(2).Children(14).Children(6).Children.Data) str2double(left_4cm(4).Children(2).Children(14).Children(8).Children.Data) str2double(left_4cm(4).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(4).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(4).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(4).Children(2).Children(14).Children(16).Children.Data) str2double(left_4cm(4).Children(2).Children(14).Children(18).Children.Data) str2double(left_4cm(4).Children(2).Children(14).Children(20).Children.Data) str2double(left_4cm(4).Children(2).Children(14).Children(22).Children.Data)
+                str2double(left_4cm(5).Children(2).Children(14).Children(2).Children.Data) str2double(left_4cm(5).Children(2).Children(14).Children(4).Children.Data) str2double(left_4cm(5).Children(2).Children(14).Children(6).Children.Data) str2double(left_4cm(5).Children(2).Children(14).Children(8).Children.Data) str2double(left_4cm(5).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(5).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(5).Children(2).Children(14).Children(14).Children.Data) str2double(left_4cm(5).Children(2).Children(14).Children(16).Children.Data) str2double(left_4cm(5).Children(2).Children(14).Children(18).Children.Data) str2double(left_4cm(5).Children(2).Children(14).Children(20).Children.Data) str2double(left_4cm(5).Children(2).Children(14).Children(22).Children.Data)];
                    
-ar_right_4cm = [str2double(right_4cm_1.Children(2).Children(14).Children(2).Children.Data) str2double(right_4cm_1.Children(2).Children(14).Children(4).Children.Data) str2double(right_4cm_1.Children(2).Children(14).Children(6).Children.Data) str2double(right_4cm_1.Children(2).Children(14).Children(8).Children.Data) str2double(right_4cm_1.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_1.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_1.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_1.Children(2).Children(14).Children(16).Children.Data) str2double(right_4cm_1.Children(2).Children(14).Children(18).Children.Data) str2double(right_4cm_1.Children(2).Children(14).Children(20).Children.Data) str2double(right_4cm_1.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(right_4cm_2.Children(2).Children(14).Children(2).Children.Data) str2double(right_4cm_2.Children(2).Children(14).Children(4).Children.Data) str2double(right_4cm_2.Children(2).Children(14).Children(6).Children.Data) str2double(right_4cm_2.Children(2).Children(14).Children(8).Children.Data) str2double(right_4cm_2.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_2.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_2.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_2.Children(2).Children(14).Children(16).Children.Data) str2double(right_4cm_2.Children(2).Children(14).Children(18).Children.Data) str2double(right_4cm_2.Children(2).Children(14).Children(20).Children.Data) str2double(right_4cm_2.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(right_4cm_3.Children(2).Children(14).Children(2).Children.Data) str2double(right_4cm_3.Children(2).Children(14).Children(4).Children.Data) str2double(right_4cm_3.Children(2).Children(14).Children(6).Children.Data) str2double(right_4cm_3.Children(2).Children(14).Children(8).Children.Data) str2double(right_4cm_3.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_3.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_3.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_3.Children(2).Children(14).Children(16).Children.Data) str2double(right_4cm_3.Children(2).Children(14).Children(18).Children.Data) str2double(right_4cm_3.Children(2).Children(14).Children(20).Children.Data) str2double(right_4cm_3.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(right_4cm_4.Children(2).Children(14).Children(2).Children.Data) str2double(right_4cm_4.Children(2).Children(14).Children(4).Children.Data) str2double(right_4cm_4.Children(2).Children(14).Children(6).Children.Data) str2double(right_4cm_4.Children(2).Children(14).Children(8).Children.Data) str2double(right_4cm_4.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_4.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_4.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_4.Children(2).Children(14).Children(16).Children.Data) str2double(right_4cm_4.Children(2).Children(14).Children(18).Children.Data) str2double(right_4cm_4.Children(2).Children(14).Children(20).Children.Data) str2double(right_4cm_4.Children(2).Children(14).Children(22).Children.Data)
-                       str2double(right_4cm_5.Children(2).Children(14).Children(2).Children.Data) str2double(right_4cm_5.Children(2).Children(14).Children(4).Children.Data) str2double(right_4cm_5.Children(2).Children(14).Children(6).Children.Data) str2double(right_4cm_5.Children(2).Children(14).Children(8).Children.Data) str2double(right_4cm_5.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_5.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_5.Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm_5.Children(2).Children(14).Children(16).Children.Data) str2double(right_4cm_5.Children(2).Children(14).Children(18).Children.Data) str2double(right_4cm_5.Children(2).Children(14).Children(20).Children.Data) str2double(right_4cm_5.Children(2).Children(14).Children(22).Children.Data)];
+ar_right_4cm = [str2double(right_4cm(1).Children(2).Children(14).Children(2).Children.Data) str2double(right_4cm(1).Children(2).Children(14).Children(4).Children.Data) str2double(right_4cm(1).Children(2).Children(14).Children(6).Children.Data) str2double(right_4cm(1).Children(2).Children(14).Children(8).Children.Data) str2double(right_4cm(1).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(1).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(1).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(1).Children(2).Children(14).Children(16).Children.Data) str2double(right_4cm(1).Children(2).Children(14).Children(18).Children.Data) str2double(right_4cm(1).Children(2).Children(14).Children(20).Children.Data) str2double(right_4cm(1).Children(2).Children(14).Children(22).Children.Data)
+                str2double(right_4cm(2).Children(2).Children(14).Children(2).Children.Data) str2double(right_4cm(2).Children(2).Children(14).Children(4).Children.Data) str2double(right_4cm(2).Children(2).Children(14).Children(6).Children.Data) str2double(right_4cm(2).Children(2).Children(14).Children(8).Children.Data) str2double(right_4cm(2).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(2).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(2).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(2).Children(2).Children(14).Children(16).Children.Data) str2double(right_4cm(2).Children(2).Children(14).Children(18).Children.Data) str2double(right_4cm(2).Children(2).Children(14).Children(20).Children.Data) str2double(right_4cm(2).Children(2).Children(14).Children(22).Children.Data)
+                str2double(right_4cm(3).Children(2).Children(14).Children(2).Children.Data) str2double(right_4cm(3).Children(2).Children(14).Children(4).Children.Data) str2double(right_4cm(3).Children(2).Children(14).Children(6).Children.Data) str2double(right_4cm(3).Children(2).Children(14).Children(8).Children.Data) str2double(right_4cm(3).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(3).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(3).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(3).Children(2).Children(14).Children(16).Children.Data) str2double(right_4cm(3).Children(2).Children(14).Children(18).Children.Data) str2double(right_4cm(3).Children(2).Children(14).Children(20).Children.Data) str2double(right_4cm(3).Children(2).Children(14).Children(22).Children.Data)
+                str2double(right_4cm(4).Children(2).Children(14).Children(2).Children.Data) str2double(right_4cm(4).Children(2).Children(14).Children(4).Children.Data) str2double(right_4cm(4).Children(2).Children(14).Children(6).Children.Data) str2double(right_4cm(4).Children(2).Children(14).Children(8).Children.Data) str2double(right_4cm(4).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(4).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(4).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(4).Children(2).Children(14).Children(16).Children.Data) str2double(right_4cm(4).Children(2).Children(14).Children(18).Children.Data) str2double(right_4cm(4).Children(2).Children(14).Children(20).Children.Data) str2double(right_4cm(4).Children(2).Children(14).Children(22).Children.Data)
+                str2double(right_4cm(5).Children(2).Children(14).Children(2).Children.Data) str2double(right_4cm(5).Children(2).Children(14).Children(4).Children.Data) str2double(right_4cm(5).Children(2).Children(14).Children(6).Children.Data) str2double(right_4cm(5).Children(2).Children(14).Children(8).Children.Data) str2double(right_4cm(5).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(5).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(5).Children(2).Children(14).Children(14).Children.Data) str2double(right_4cm(5).Children(2).Children(14).Children(16).Children.Data) str2double(right_4cm(5).Children(2).Children(14).Children(18).Children.Data) str2double(right_4cm(5).Children(2).Children(14).Children(20).Children.Data) str2double(right_4cm(5).Children(2).Children(14).Children(22).Children.Data)];
                    
-pr_left_2cm = [str2double(left_2cm_1.Children(2).Children(16).Children(2).Children.Data) str2double(left_2cm_1.Children(2).Children(16).Children(4).Children.Data) str2double(left_2cm_1.Children(2).Children(16).Children(6).Children.Data) str2double(left_2cm_1.Children(2).Children(16).Children(8).Children.Data) str2double(left_2cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_1.Children(2).Children(16).Children(18).Children.Data) str2double(left_2cm_1.Children(2).Children(16).Children(20).Children.Data) str2double(left_2cm_1.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(left_2cm_2.Children(2).Children(16).Children(2).Children.Data) str2double(left_2cm_2.Children(2).Children(16).Children(4).Children.Data) str2double(left_2cm_2.Children(2).Children(16).Children(6).Children.Data) str2double(left_2cm_2.Children(2).Children(16).Children(8).Children.Data) str2double(left_2cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_2.Children(2).Children(16).Children(18).Children.Data) str2double(left_2cm_2.Children(2).Children(16).Children(20).Children.Data) str2double(left_2cm_2.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(left_2cm_3.Children(2).Children(16).Children(2).Children.Data) str2double(left_2cm_3.Children(2).Children(16).Children(4).Children.Data) str2double(left_2cm_3.Children(2).Children(16).Children(6).Children.Data) str2double(left_2cm_3.Children(2).Children(16).Children(8).Children.Data) str2double(left_2cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_3.Children(2).Children(16).Children(18).Children.Data) str2double(left_2cm_3.Children(2).Children(16).Children(20).Children.Data) str2double(left_2cm_3.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(left_2cm_4.Children(2).Children(16).Children(2).Children.Data) str2double(left_2cm_4.Children(2).Children(16).Children(4).Children.Data) str2double(left_2cm_4.Children(2).Children(16).Children(6).Children.Data) str2double(left_2cm_4.Children(2).Children(16).Children(8).Children.Data) str2double(left_2cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_4.Children(2).Children(16).Children(18).Children.Data) str2double(left_2cm_4.Children(2).Children(16).Children(20).Children.Data) str2double(left_2cm_4.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(left_2cm_5.Children(2).Children(16).Children(2).Children.Data) str2double(left_2cm_5.Children(2).Children(16).Children(4).Children.Data) str2double(left_2cm_5.Children(2).Children(16).Children(6).Children.Data) str2double(left_2cm_5.Children(2).Children(16).Children(8).Children.Data) str2double(left_2cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm_5.Children(2).Children(16).Children(18).Children.Data) str2double(left_2cm_5.Children(2).Children(16).Children(20).Children.Data) str2double(left_2cm_5.Children(2).Children(16).Children(22).Children.Data)];
+pr_left_2cm =  [str2double(left_2cm(1).Children(2).Children(16).Children(2).Children.Data) str2double(left_2cm(1).Children(2).Children(16).Children(4).Children.Data) str2double(left_2cm(1).Children(2).Children(16).Children(6).Children.Data) str2double(left_2cm(1).Children(2).Children(16).Children(8).Children.Data) str2double(left_2cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(1).Children(2).Children(16).Children(18).Children.Data) str2double(left_2cm(1).Children(2).Children(16).Children(20).Children.Data) str2double(left_2cm(1).Children(2).Children(16).Children(22).Children.Data)
+                str2double(left_2cm(2).Children(2).Children(16).Children(2).Children.Data) str2double(left_2cm(2).Children(2).Children(16).Children(4).Children.Data) str2double(left_2cm(2).Children(2).Children(16).Children(6).Children.Data) str2double(left_2cm(2).Children(2).Children(16).Children(8).Children.Data) str2double(left_2cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(2).Children(2).Children(16).Children(18).Children.Data) str2double(left_2cm(2).Children(2).Children(16).Children(20).Children.Data) str2double(left_2cm(2).Children(2).Children(16).Children(22).Children.Data)
+                str2double(left_2cm(3).Children(2).Children(16).Children(2).Children.Data) str2double(left_2cm(3).Children(2).Children(16).Children(4).Children.Data) str2double(left_2cm(3).Children(2).Children(16).Children(6).Children.Data) str2double(left_2cm(3).Children(2).Children(16).Children(8).Children.Data) str2double(left_2cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(3).Children(2).Children(16).Children(18).Children.Data) str2double(left_2cm(3).Children(2).Children(16).Children(20).Children.Data) str2double(left_2cm(3).Children(2).Children(16).Children(22).Children.Data)
+                str2double(left_2cm(4).Children(2).Children(16).Children(2).Children.Data) str2double(left_2cm(4).Children(2).Children(16).Children(4).Children.Data) str2double(left_2cm(4).Children(2).Children(16).Children(6).Children.Data) str2double(left_2cm(4).Children(2).Children(16).Children(8).Children.Data) str2double(left_2cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(4).Children(2).Children(16).Children(18).Children.Data) str2double(left_2cm(4).Children(2).Children(16).Children(20).Children.Data) str2double(left_2cm(4).Children(2).Children(16).Children(22).Children.Data)
+                str2double(left_2cm(5).Children(2).Children(16).Children(2).Children.Data) str2double(left_2cm(5).Children(2).Children(16).Children(4).Children.Data) str2double(left_2cm(5).Children(2).Children(16).Children(6).Children.Data) str2double(left_2cm(5).Children(2).Children(16).Children(8).Children.Data) str2double(left_2cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(left_2cm(5).Children(2).Children(16).Children(18).Children.Data) str2double(left_2cm(5).Children(2).Children(16).Children(20).Children.Data) str2double(left_2cm(5).Children(2).Children(16).Children(22).Children.Data)];
 
-pr_right_2cm = [str2double(right_2cm_1.Children(2).Children(16).Children(2).Children.Data) str2double(right_2cm_1.Children(2).Children(16).Children(4).Children.Data) str2double(right_2cm_1.Children(2).Children(16).Children(6).Children.Data) str2double(right_2cm_1.Children(2).Children(16).Children(8).Children.Data) str2double(right_2cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_1.Children(2).Children(16).Children(18).Children.Data) str2double(right_2cm_1.Children(2).Children(16).Children(20).Children.Data) str2double(right_2cm_1.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(right_2cm_2.Children(2).Children(16).Children(2).Children.Data) str2double(right_2cm_2.Children(2).Children(16).Children(4).Children.Data) str2double(right_2cm_2.Children(2).Children(16).Children(6).Children.Data) str2double(right_2cm_2.Children(2).Children(16).Children(8).Children.Data) str2double(right_2cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_2.Children(2).Children(16).Children(18).Children.Data) str2double(right_2cm_2.Children(2).Children(16).Children(20).Children.Data) str2double(right_2cm_2.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(right_2cm_3.Children(2).Children(16).Children(2).Children.Data) str2double(right_2cm_3.Children(2).Children(16).Children(4).Children.Data) str2double(right_2cm_3.Children(2).Children(16).Children(6).Children.Data) str2double(right_2cm_3.Children(2).Children(16).Children(8).Children.Data) str2double(right_2cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_3.Children(2).Children(16).Children(18).Children.Data) str2double(right_2cm_3.Children(2).Children(16).Children(20).Children.Data) str2double(right_2cm_3.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(right_2cm_4.Children(2).Children(16).Children(2).Children.Data) str2double(right_2cm_4.Children(2).Children(16).Children(4).Children.Data) str2double(right_2cm_4.Children(2).Children(16).Children(6).Children.Data) str2double(right_2cm_4.Children(2).Children(16).Children(8).Children.Data) str2double(right_2cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_4.Children(2).Children(16).Children(18).Children.Data) str2double(right_2cm_4.Children(2).Children(16).Children(20).Children.Data) str2double(right_2cm_4.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(right_2cm_5.Children(2).Children(16).Children(2).Children.Data) str2double(right_2cm_5.Children(2).Children(16).Children(4).Children.Data) str2double(right_2cm_5.Children(2).Children(16).Children(6).Children.Data) str2double(right_2cm_5.Children(2).Children(16).Children(8).Children.Data) str2double(right_2cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm_5.Children(2).Children(16).Children(18).Children.Data) str2double(right_2cm_5.Children(2).Children(16).Children(20).Children.Data) str2double(right_2cm_5.Children(2).Children(16).Children(22).Children.Data)];
+pr_right_2cm = [str2double(right_2cm(1).Children(2).Children(16).Children(2).Children.Data) str2double(right_2cm(1).Children(2).Children(16).Children(4).Children.Data) str2double(right_2cm(1).Children(2).Children(16).Children(6).Children.Data) str2double(right_2cm(1).Children(2).Children(16).Children(8).Children.Data) str2double(right_2cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(1).Children(2).Children(16).Children(18).Children.Data) str2double(right_2cm(1).Children(2).Children(16).Children(20).Children.Data) str2double(right_2cm(1).Children(2).Children(16).Children(22).Children.Data)
+                str2double(right_2cm(2).Children(2).Children(16).Children(2).Children.Data) str2double(right_2cm(2).Children(2).Children(16).Children(4).Children.Data) str2double(right_2cm(2).Children(2).Children(16).Children(6).Children.Data) str2double(right_2cm(2).Children(2).Children(16).Children(8).Children.Data) str2double(right_2cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(2).Children(2).Children(16).Children(18).Children.Data) str2double(right_2cm(2).Children(2).Children(16).Children(20).Children.Data) str2double(right_2cm(2).Children(2).Children(16).Children(22).Children.Data)
+                str2double(right_2cm(3).Children(2).Children(16).Children(2).Children.Data) str2double(right_2cm(3).Children(2).Children(16).Children(4).Children.Data) str2double(right_2cm(3).Children(2).Children(16).Children(6).Children.Data) str2double(right_2cm(3).Children(2).Children(16).Children(8).Children.Data) str2double(right_2cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(3).Children(2).Children(16).Children(18).Children.Data) str2double(right_2cm(3).Children(2).Children(16).Children(20).Children.Data) str2double(right_2cm(3).Children(2).Children(16).Children(22).Children.Data)
+                str2double(right_2cm(4).Children(2).Children(16).Children(2).Children.Data) str2double(right_2cm(4).Children(2).Children(16).Children(4).Children.Data) str2double(right_2cm(4).Children(2).Children(16).Children(6).Children.Data) str2double(right_2cm(4).Children(2).Children(16).Children(8).Children.Data) str2double(right_2cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(4).Children(2).Children(16).Children(18).Children.Data) str2double(right_2cm(4).Children(2).Children(16).Children(20).Children.Data) str2double(right_2cm(4).Children(2).Children(16).Children(22).Children.Data)
+                str2double(right_2cm(5).Children(2).Children(16).Children(2).Children.Data) str2double(right_2cm(5).Children(2).Children(16).Children(4).Children.Data) str2double(right_2cm(5).Children(2).Children(16).Children(6).Children.Data) str2double(right_2cm(5).Children(2).Children(16).Children(8).Children.Data) str2double(right_2cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(right_2cm(5).Children(2).Children(16).Children(18).Children.Data) str2double(right_2cm(5).Children(2).Children(16).Children(20).Children.Data) str2double(right_2cm(5).Children(2).Children(16).Children(22).Children.Data)];
                    
-pr_left_4cm = [str2double(left_4cm_1.Children(2).Children(16).Children(2).Children.Data) str2double(left_4cm_1.Children(2).Children(16).Children(4).Children.Data) str2double(left_4cm_1.Children(2).Children(16).Children(6).Children.Data) str2double(left_4cm_1.Children(2).Children(16).Children(8).Children.Data) str2double(left_4cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_1.Children(2).Children(16).Children(18).Children.Data) str2double(left_4cm_1.Children(2).Children(16).Children(20).Children.Data) str2double(left_4cm_1.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(left_4cm_2.Children(2).Children(16).Children(2).Children.Data) str2double(left_4cm_2.Children(2).Children(16).Children(4).Children.Data) str2double(left_4cm_2.Children(2).Children(16).Children(6).Children.Data) str2double(left_4cm_2.Children(2).Children(16).Children(8).Children.Data) str2double(left_4cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_2.Children(2).Children(16).Children(18).Children.Data) str2double(left_4cm_2.Children(2).Children(16).Children(20).Children.Data) str2double(left_4cm_2.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(left_4cm_3.Children(2).Children(16).Children(2).Children.Data) str2double(left_4cm_3.Children(2).Children(16).Children(4).Children.Data) str2double(left_4cm_3.Children(2).Children(16).Children(6).Children.Data) str2double(left_4cm_3.Children(2).Children(16).Children(8).Children.Data) str2double(left_4cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_3.Children(2).Children(16).Children(18).Children.Data) str2double(left_4cm_3.Children(2).Children(16).Children(20).Children.Data) str2double(left_4cm_3.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(left_4cm_4.Children(2).Children(16).Children(2).Children.Data) str2double(left_4cm_4.Children(2).Children(16).Children(4).Children.Data) str2double(left_4cm_4.Children(2).Children(16).Children(6).Children.Data) str2double(left_4cm_4.Children(2).Children(16).Children(8).Children.Data) str2double(left_4cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_4.Children(2).Children(16).Children(18).Children.Data) str2double(left_4cm_4.Children(2).Children(16).Children(20).Children.Data) str2double(left_4cm_4.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(left_4cm_5.Children(2).Children(16).Children(2).Children.Data) str2double(left_4cm_5.Children(2).Children(16).Children(4).Children.Data) str2double(left_4cm_5.Children(2).Children(16).Children(6).Children.Data) str2double(left_4cm_5.Children(2).Children(16).Children(8).Children.Data) str2double(left_4cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm_5.Children(2).Children(16).Children(18).Children.Data) str2double(left_4cm_5.Children(2).Children(16).Children(20).Children.Data) str2double(left_4cm_5.Children(2).Children(16).Children(22).Children.Data)];
+pr_left_4cm =  [str2double(left_4cm(1).Children(2).Children(16).Children(2).Children.Data) str2double(left_4cm(1).Children(2).Children(16).Children(4).Children.Data) str2double(left_4cm(1).Children(2).Children(16).Children(6).Children.Data) str2double(left_4cm(1).Children(2).Children(16).Children(8).Children.Data) str2double(left_4cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(1).Children(2).Children(16).Children(18).Children.Data) str2double(left_4cm(1).Children(2).Children(16).Children(20).Children.Data) str2double(left_4cm(1).Children(2).Children(16).Children(22).Children.Data)
+                str2double(left_4cm(2).Children(2).Children(16).Children(2).Children.Data) str2double(left_4cm(2).Children(2).Children(16).Children(4).Children.Data) str2double(left_4cm(2).Children(2).Children(16).Children(6).Children.Data) str2double(left_4cm(2).Children(2).Children(16).Children(8).Children.Data) str2double(left_4cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(2).Children(2).Children(16).Children(18).Children.Data) str2double(left_4cm(2).Children(2).Children(16).Children(20).Children.Data) str2double(left_4cm(2).Children(2).Children(16).Children(22).Children.Data)
+                str2double(left_4cm(3).Children(2).Children(16).Children(2).Children.Data) str2double(left_4cm(3).Children(2).Children(16).Children(4).Children.Data) str2double(left_4cm(3).Children(2).Children(16).Children(6).Children.Data) str2double(left_4cm(3).Children(2).Children(16).Children(8).Children.Data) str2double(left_4cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(3).Children(2).Children(16).Children(18).Children.Data) str2double(left_4cm(3).Children(2).Children(16).Children(20).Children.Data) str2double(left_4cm(3).Children(2).Children(16).Children(22).Children.Data)
+                str2double(left_4cm(4).Children(2).Children(16).Children(2).Children.Data) str2double(left_4cm(4).Children(2).Children(16).Children(4).Children.Data) str2double(left_4cm(4).Children(2).Children(16).Children(6).Children.Data) str2double(left_4cm(4).Children(2).Children(16).Children(8).Children.Data) str2double(left_4cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(4).Children(2).Children(16).Children(18).Children.Data) str2double(left_4cm(4).Children(2).Children(16).Children(20).Children.Data) str2double(left_4cm(4).Children(2).Children(16).Children(22).Children.Data)
+                str2double(left_4cm(5).Children(2).Children(16).Children(2).Children.Data) str2double(left_4cm(5).Children(2).Children(16).Children(4).Children.Data) str2double(left_4cm(5).Children(2).Children(16).Children(6).Children.Data) str2double(left_4cm(5).Children(2).Children(16).Children(8).Children.Data) str2double(left_4cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(left_4cm(5).Children(2).Children(16).Children(18).Children.Data) str2double(left_4cm(5).Children(2).Children(16).Children(20).Children.Data) str2double(left_4cm(5).Children(2).Children(16).Children(22).Children.Data)];
                    
-pr_right_4cm = [str2double(right_4cm_1.Children(2).Children(16).Children(2).Children.Data) str2double(right_4cm_1.Children(2).Children(16).Children(4).Children.Data) str2double(right_4cm_1.Children(2).Children(16).Children(6).Children.Data) str2double(right_4cm_1.Children(2).Children(16).Children(8).Children.Data) str2double(right_4cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_1.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_1.Children(2).Children(16).Children(18).Children.Data) str2double(right_4cm_1.Children(2).Children(16).Children(20).Children.Data) str2double(right_4cm_1.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(right_4cm_2.Children(2).Children(16).Children(2).Children.Data) str2double(right_4cm_2.Children(2).Children(16).Children(4).Children.Data) str2double(right_4cm_2.Children(2).Children(16).Children(6).Children.Data) str2double(right_4cm_2.Children(2).Children(16).Children(8).Children.Data) str2double(right_4cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_2.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_2.Children(2).Children(16).Children(18).Children.Data) str2double(right_4cm_2.Children(2).Children(16).Children(20).Children.Data) str2double(right_4cm_2.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(right_4cm_3.Children(2).Children(16).Children(2).Children.Data) str2double(right_4cm_3.Children(2).Children(16).Children(4).Children.Data) str2double(right_4cm_3.Children(2).Children(16).Children(6).Children.Data) str2double(right_4cm_3.Children(2).Children(16).Children(8).Children.Data) str2double(right_4cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_3.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_3.Children(2).Children(16).Children(18).Children.Data) str2double(right_4cm_3.Children(2).Children(16).Children(20).Children.Data) str2double(right_4cm_3.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(right_4cm_4.Children(2).Children(16).Children(2).Children.Data) str2double(right_4cm_4.Children(2).Children(16).Children(4).Children.Data) str2double(right_4cm_4.Children(2).Children(16).Children(6).Children.Data) str2double(right_4cm_4.Children(2).Children(16).Children(8).Children.Data) str2double(right_4cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_4.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_4.Children(2).Children(16).Children(18).Children.Data) str2double(right_4cm_4.Children(2).Children(16).Children(20).Children.Data) str2double(right_4cm_4.Children(2).Children(16).Children(22).Children.Data)
-                       str2double(right_4cm_5.Children(2).Children(16).Children(2).Children.Data) str2double(right_4cm_5.Children(2).Children(16).Children(4).Children.Data) str2double(right_4cm_5.Children(2).Children(16).Children(6).Children.Data) str2double(right_4cm_5.Children(2).Children(16).Children(8).Children.Data) str2double(right_4cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_5.Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm_5.Children(2).Children(16).Children(18).Children.Data) str2double(right_4cm_5.Children(2).Children(16).Children(20).Children.Data) str2double(right_4cm_5.Children(2).Children(16).Children(22).Children.Data)];
-                   
-% f_cadence = logspace(3,6,31);
-% a_cadence_spline = [92.09, 74.16, 58.78, 47.73, 40.43, 34.74, 31.12, 29.12, 28.62, 28.90, 30.55, 33.76, 38.53, 42.90, 40.89, 35.20, 37.46, 33.79, 33.84, 30.91, 28.66, 26.04, 23.49, 21.05, 18.29, 16.33, 14.21, 12.29, 10.86, 9.47, 8.60];
-% p_cadence_spline = [71.63, 72.40, 72.98, 69.48, 60.29, 49.89, 39.76, 28.90, 19.02, 10.23, 2.74, -1.92, -2.17, 4.39, 14.53, 14.85, 13.87, 21.55, 22.60, 24.00, 27.12, 31.55, 31.98, 33.74, 34.40, 34.12, 32.88, 29.45, 24.06, 16.37, 5.36];
-% a_cadence_bbspice = [232.73, 184.91, 145.82, 117.09, 92.33, 74.70, 62.14, 52.01, 44.03, 39.76, 36.66, 35.30, 35.50, 35.72, 36.28, 36.50, 36.29, 35.58, 34.28, 32.41, 29.93, 26.89, 23.56, 20.30, 17.50, 15.30, 13.73, 12.68, 12.00, 11.58, 11.31];
-% p_cadence_bbspice = [-50.36, -41.59, -30.09, -20.34, -11.06, -1.70, 3.98, 9.01, 10.48, 9.69, 8.25, 6.11, 4.70, 4.75, 6.39, 8.57, 11.71, 15.43, 19.60, 24.01, 28.60, 32.60, 35.43, 36.58, 35.73, 32.96, 28.98, 24.56, 20.29, 16.49, 13.31];
-                   
-% %%% 2.5 cm IED %%%
-%                    
-% figure
-% hAx=axes;
-% hAx.XScale='log';
-% % xlim([f(4) f(8)]);
-% hold all
-% for k = 1:5
-%     errorbar(f,a_left_2cm(k,:),ar_left_2cm(k,:),'o-','LineWidth',1.5)
-%     errorbar(f,a_right_2cm(k,:),ar_right_2cm(k,:),'*--','LineWidth',1.5)
-% end
-% grid minor
-% title('Magnitude - 2.5cm IED')
-% xlabel('Frequency [Hz]')
-% ylabel('Magnitude [Ohm]')
-% legend('left 1','left 2','left 3','left 4','left 5','right 1','right 2','right 3','right 4','right 5')
-% 
-% figure
-% hAx=axes;
-% hAx.XScale='log';
-% % xlim([f(4) f(8)]);
-% hold all
-% for k = 1:5
-%     errorbar(f,p_left_2cm(k,:),pr_left_2cm(k,:),'o-','LineWidth',1.5)
-%     errorbar(f,p_right_2cm(k,:),pr_right_2cm(k,:),'*--','LineWidth',1.5)
-% end
-% grid minor
-% title('Phase - 2.5cm IED')
-% xlabel('Frequency [Hz]')
-% ylabel('Phase [Degrees]')
-% legend('left 1','left 2','left 3','left 4','left 5','right 1','right 2','right 3','right 4','right 5')
-% 
-% %%% 4cm IED %%%
-% 
-% figure
-% hAx=axes;
-% hAx.XScale='log';
-% % xlim([f(4) f(8)]);
-% hold all
-% for k = 1:5
-%     errorbar(f,a_left_4cm(k,:),ar_left_4cm(k,:),'o-','LineWidth',1.5)
-%     errorbar(f,a_right_4cm(k,:),ar_right_4cm(k,:),'*--','LineWidth',1.5)
-% end
-% grid minor
-% title('Magnitude - 4cm IED')
-% xlabel('Frequency [Hz]')
-% ylabel('Magnitude [Ohm]')
-% legend('left 1','left 2','left 3','left 4','left 5','right 1','right 2','right 3','right 4','right 5')
-% 
-% figure
-% hAx=axes;
-% hAx.XScale='log';
-% % xlim([f(4) f(8)]);
-% hold all
-% for k = 1:5
-%     errorbar(f,p_left_4cm(k,:),pr_left_4cm(k,:),'o-','LineWidth',1.5)
-%     errorbar(f,p_right_4cm(k,:),pr_right_4cm(k,:),'*--','LineWidth',1.5)
-% end
-% grid minor
-% title('Phase - 4cm IED')
-% xlabel('Frequency [Hz]')
-% ylabel('Phase [Degrees]')
-% legend('left 1','left 2','left 3','left 4','left 5','right 1','right 2','right 3','right 4','right 5')
+pr_right_4cm = [str2double(right_4cm(1).Children(2).Children(16).Children(2).Children.Data) str2double(right_4cm(1).Children(2).Children(16).Children(4).Children.Data) str2double(right_4cm(1).Children(2).Children(16).Children(6).Children.Data) str2double(right_4cm(1).Children(2).Children(16).Children(8).Children.Data) str2double(right_4cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(1).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(1).Children(2).Children(16).Children(18).Children.Data) str2double(right_4cm(1).Children(2).Children(16).Children(20).Children.Data) str2double(right_4cm(1).Children(2).Children(16).Children(22).Children.Data)
+                str2double(right_4cm(2).Children(2).Children(16).Children(2).Children.Data) str2double(right_4cm(2).Children(2).Children(16).Children(4).Children.Data) str2double(right_4cm(2).Children(2).Children(16).Children(6).Children.Data) str2double(right_4cm(2).Children(2).Children(16).Children(8).Children.Data) str2double(right_4cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(2).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(2).Children(2).Children(16).Children(18).Children.Data) str2double(right_4cm(2).Children(2).Children(16).Children(20).Children.Data) str2double(right_4cm(2).Children(2).Children(16).Children(22).Children.Data)
+                str2double(right_4cm(3).Children(2).Children(16).Children(2).Children.Data) str2double(right_4cm(3).Children(2).Children(16).Children(4).Children.Data) str2double(right_4cm(3).Children(2).Children(16).Children(6).Children.Data) str2double(right_4cm(3).Children(2).Children(16).Children(8).Children.Data) str2double(right_4cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(3).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(3).Children(2).Children(16).Children(18).Children.Data) str2double(right_4cm(3).Children(2).Children(16).Children(20).Children.Data) str2double(right_4cm(3).Children(2).Children(16).Children(22).Children.Data)
+                str2double(right_4cm(4).Children(2).Children(16).Children(2).Children.Data) str2double(right_4cm(4).Children(2).Children(16).Children(4).Children.Data) str2double(right_4cm(4).Children(2).Children(16).Children(6).Children.Data) str2double(right_4cm(4).Children(2).Children(16).Children(8).Children.Data) str2double(right_4cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(4).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(4).Children(2).Children(16).Children(18).Children.Data) str2double(right_4cm(4).Children(2).Children(16).Children(20).Children.Data) str2double(right_4cm(4).Children(2).Children(16).Children(22).Children.Data)
+                str2double(right_4cm(5).Children(2).Children(16).Children(2).Children.Data) str2double(right_4cm(5).Children(2).Children(16).Children(4).Children.Data) str2double(right_4cm(5).Children(2).Children(16).Children(6).Children.Data) str2double(right_4cm(5).Children(2).Children(16).Children(8).Children.Data) str2double(right_4cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(5).Children(2).Children(16).Children(16).Children.Data) str2double(right_4cm(5).Children(2).Children(16).Children(18).Children.Data) str2double(right_4cm(5).Children(2).Children(16).Children(20).Children.Data) str2double(right_4cm(5).Children(2).Children(16).Children(22).Children.Data)];
 
-%%% Mean - 2.5 cm IED %%%
+a_2cm(:,subject,limb) = mean([a_left_2cm ; a_right_2cm]);
+a_4cm(:,subject,limb) = mean([a_left_4cm ; a_right_4cm]);
+p_2cm(:,subject,limb) = mean([p_left_2cm ; p_right_2cm]);
+p_4cm(:,subject,limb) = mean([p_left_4cm ; p_right_4cm]);
+ar_2cm(:,subject,limb) = sqrt(mean([ar_left_2cm.^2 ; ar_right_2cm.^2]));
+ar_4cm(:,subject,limb) = sqrt(mean([ar_left_4cm.^2 ; ar_right_4cm.^2]));
+pr_2cm(:,subject,limb) = sqrt(mean([pr_left_2cm.^2 ; pr_right_2cm.^2]));
+pr_4cm(:,subject,limb) = sqrt(mean([pr_left_4cm.^2 ; pr_right_4cm.^2]));
 
-if limb == 1 && subject == 1
+if subject == 10
+    rmse_FEA_pha_2cm(limb) = sqrt(mean((mean(p_2cm(:,:,limb),2) - p_sim_2cm).^2));
+    rmse_FEA_pha_4cm(limb) = sqrt(mean((mean(p_4cm(:,:,limb),2) - p_sim_4cm).^2));
+    rmse_FEA_mag_2cm(limb) = sqrt(mean((mean(a_2cm(:,:,limb),2) - a_sim_2cm).^2));
+    rmse_FEA_mag_4cm(limb) = sqrt(mean((mean(a_4cm(:,:,limb),2) - a_sim_4cm).^2));
+    rmse_circ_pha_2cm(limb) = sqrt(mean((mean(p_2cm(:,:,limb),2) - p_cadence_2cm).^2));
+    rmse_circ_pha_4cm(limb) = sqrt(mean((mean(p_4cm(:,:,limb),2) - p_cadence_4cm).^2));
+    rmse_circ_mag_2cm(limb) = sqrt(mean((mean(a_2cm(:,:,limb),2) - a_cadence_2cm).^2));
+    rmse_circ_mag_4cm(limb) = sqrt(mean((mean(a_4cm(:,:,limb),2) - a_cadence_4cm).^2));
+end
+
+if limb == 1 && subject == 2
+    % simulated magnitude
     figure(1)
     hAx=axes;
     hAx.XScale='log';
-    % xlim([f(4) f(8)]);
-    % ylim([-10 70]);
     hold on
-    set(gca,'FontSize',28);
-    set(gcf, 'WindowState', 'maximized');
-    errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#D95319')
-    errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#EDB120')
+    set(gca,'FontSize',20);
+    set(gcf, 'WindowState', 'maximized')
+    plot(log10(f),a_sim_2cm,'*--r','LineWidth',2,'MarkerSize',16)
+    plot(log10(f),a_sim_4cm,'*--b','LineWidth',2,'MarkerSize',16)
+    plot(log10(f),a_cadence_2cm,'s:r','LineWidth',2,'MarkerSize',16)
+    plot(log10(f),a_cadence_4cm,'s:b','LineWidth',2,'MarkerSize',16)
     
-    plot(f,a_sim_2cm,'*--r','LineWidth',2,'MarkerSize',16)
-    plot(f,a_sim_4cm,'*--b','LineWidth',2,'MarkerSize',16)
-    plot(f,a_cadence_2cm,'s:r','LineWidth',2,'MarkerSize',16)
-    plot(f,a_cadence_4cm,'s:b','LineWidth',2,'MarkerSize',16)
-elseif limb == 1 && subject == 2
+    % simulated phase
+    figure(2)
+    hAx=axes;
+    hAx.XScale='log';
+    hold on
+    set(gca,'FontSize',20);
+    set(gcf, 'WindowState', 'maximized')
+    plot(log10(f),p_sim_2cm,'*--r','LineWidth',2,'MarkerSize',16)
+    plot(log10(f),p_sim_4cm,'*--b','LineWidth',2,'MarkerSize',16)
+    plot(log10(f),p_cadence_2cm,'s:r','LineWidth',2,'MarkerSize',16)
+    plot(log10(f),p_cadence_4cm,'s:b','LineWidth',2,'MarkerSize',16)
+elseif limb == 1 && subject == 10
+    a_2cm_4cm(:,1,:) = a_2cm(:,:,limb);
+    a_2cm_4cm(:,2,:) = a_4cm(:,:,limb);
+    p_2cm_4cm(:,1,:) = p_2cm(:,:,limb);
+    p_2cm_4cm(:,2,:) = p_4cm(:,:,limb);
+    
+    % boxplot magnitude
     figure(1)
-    hold on
-    errorbar(f,mean([a_left_2cm ; a_right_4cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
-    errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
-    
-%     plot(f,a_sim_2cm,'*--g','LineWidth',2,'MarkerSize',16)
-%     plot(f,a_sim_4cm,'*--y','LineWidth',2,'MarkerSize',16)
-%     plot(f,a_cadence_2cm,'s:g','LineWidth',2,'MarkerSize',16)
-%     plot(f,a_cadence_4cm,'s:y','LineWidth',2,'MarkerSize',16)
+    box_a = boxplot2(a_2cm_4cm,log10(f));
+    cmap = get(0, 'defaultaxescolororder');
+    for ii = 1:2
+        structfun(@(x) set(x(3-ii,:), 'color', cmap(ii,:), ...
+            'markeredgecolor', cmap(ii,:)), box_a);
+    end
+    ylim([0 130])
+    xticks(log10(f))
+    xticklabels(num2str(f'/1e3,'%.0f'))
     grid minor
-    xlabel('Frequency [Hz]')
+    xlabel('Frequency [kHz]')
     ylabel('Magnitude [Ohm]')
-    legend({'Subject 1 - Measured Mean - 2.5cm IED',...
-            'Subject 1 - Measured Mean - 4cm IED',...
-            'Subject 2 - Measured Mean - 2.5cm IED',...
-            'Subject 2 - Measured Mean - 4cm IED',...
-            'FEA - 2.5cm IED',...
+    legend({'FEA - 2.5cm IED',...
             'FEA - 4cm IED',...
             'Circuit Model - 2.5cm IED',...
-            'Circuit Model - 4cm IED',},...
-            'Location','southwest','NumColumns',1)
+            'Circuit Model - 4cm IED',...
+            'Measurements - 2.5cm IED',...
+            'Measurements - 4cm IED'},...
+            'Location','northeast','NumColumns',1)
 %      print -depsc a_arm_1
-
-elseif limb == 2 && subject == 1
-    figure(3)
-    hAx=axes;
-    hAx.XScale='log';
-    % xlim([f(4) f(8)]);
-    ylim([-15 60]);
-    hold on
-    set(gca,'FontSize',28);
-    set(gcf, 'WindowState', 'maximized');
-    errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#D95319')
-    errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#EDB120')
     
-    plot(f,a_sim_2cm,'*--r','LineWidth',2,'MarkerSize',16)
-    plot(f,a_sim_4cm,'*--b','LineWidth',2,'MarkerSize',16)
-    plot(f,a_cadence_2cm,'s:r','LineWidth',2,'MarkerSize',16)
-    plot(f,a_cadence_4cm,'s:b','LineWidth',2,'MarkerSize',16)
-elseif limb == 2 && subject == 2
-    figure(3)
-    hold on
-    errorbar(f,mean([a_left_2cm ; a_right_4cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
-    errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
-    
-%     plot(f,a_sim_2cm,'*--g','LineWidth',2,'MarkerSize',16)
-%     plot(f,a_sim_4cm,'*--y','LineWidth',2,'MarkerSize',16)
-%     plot(f,a_cadence_2cm,'s:g','LineWidth',2,'MarkerSize',16)
-%     plot(f,a_cadence_4cm,'s:y','LineWidth',2,'MarkerSize',16)
-    grid minor
-    xlabel('Frequency [Hz]')
-    ylabel('Magnitude [Ohm]')
-    legend({'Subject 1 - Measured Mean - 2.5cm IED',...
-            'Subject 1 - Measured Mean - 4cm IED',...
-            'Subject 2 - Measured Mean - 2.5cm IED',...
-            'Subject 2 - Measured Mean - 4cm IED',...
-            'FEA - 2.5cm IED',...
-            'FEA - 4cm IED',...
-            'Circuit Model - 2.5cm IED',...
-            'Circuit Model - 4cm IED',},...
-            'Location','southwest','NumColumns',1)
-%      print -depsc a_leg_1
-end
-
-
-if limb == 1 && subject == 1
+    % boxplot phase
     figure(2)
-    hAx=axes;
-    hAx.XScale='log';
-    % xlim([f(4) f(8)]);
-    % ylim([-10 60]);
-    set(gca,'FontSize',28);
-    set(gcf, 'WindowState', 'maximized');
-    hold on
-    errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([p_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#D95319')
-    errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([p_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#EDB120')
-    
-    plot(f,p_sim_2cm,'*--r','LineWidth',2,'MarkerSize',16)
-    plot(f,p_sim_4cm,'*--b','LineWidth',2,'MarkerSize',16)
-    plot(f,p_cadence_2cm,'s:r','LineWidth',2,'MarkerSize',16)
-    plot(f,p_cadence_4cm,'s:b','LineWidth',2,'MarkerSize',16)
-elseif limb == 1 && subject == 2
-    figure(2)
-    hold on
-    errorbar(f,mean([p_left_2cm ; p_right_4cm]),std([p_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
-    errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([p_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
-    
-%     plot(f,p_sim_2cm,'*--g','LineWidth',2,'MarkerSize',16)
-%     plot(f,p_sim_4cm,'*--y','LineWidth',2,'MarkerSize',16)
-%     plot(f,p_cadence_2cm,'s:g','LineWidth',2,'MarkerSize',16)
-%     plot(f,p_cadence_4cm,'s:y','LineWidth',2,'MarkerSize',16)
-    
+    box_a = boxplot2(p_2cm_4cm,log10(f));
+    cmap = get(0, 'defaultaxescolororder');
+    for ii = 1:2
+        structfun(@(x) set(x(3-ii,:), 'color', cmap(ii,:), ...
+            'markeredgecolor', cmap(ii,:)), box_a);
+    end
+    xticks(log10(f))
+    xticklabels(num2str(f'/1e3,'%.0f'))
     grid minor
-    xlabel('Frequency [Hz]')
+    xlabel('Frequency [kHz]')
     ylabel('Phase [Degrees]')
-    legend({'Subject 1 - Measured Mean - 2.5cm IED',...
-            'Subject 1 - Measured Mean - 4cm IED',...
-            'Subject 2 - Measured Mean - 2.5cm IED',...
-            'Subject 2 - Measured Mean - 4cm IED',...
-            'FEA - 2.5cm IED',...
+    legend({'FEA - 2.5cm IED',...
             'FEA - 4cm IED',...
             'Circuit Model - 2.5cm IED',...
-            'Circuit Model - 4cm IED',},...
-            'Location','northwest','NumColumns',1)
+            'Circuit Model - 4cm IED',...
+            'Measurements - 2.5cm IED',...
+            'Measurements - 4cm IED'},...
+            'Location','southeast','NumColumns',1)
 %      print -depsc p_arm_1
- 
-elseif limb == 2 && subject == 1
+end
+
+
+if limb == 2 && subject == 2
+    % simulated magnitude
+    figure(3)
+    hAx=axes;
+    hAx.XScale='log';
+    hold on
+    set(gca,'FontSize',20);
+    set(gcf, 'WindowState', 'maximized')
+    plot(log10(f),a_sim_2cm,'*--r','LineWidth',2,'MarkerSize',16)
+    plot(log10(f),a_sim_4cm,'*--b','LineWidth',2,'MarkerSize',16)
+    plot(log10(f),a_cadence_2cm,'s:r','LineWidth',2,'MarkerSize',16)
+    plot(log10(f),a_cadence_4cm,'s:b','LineWidth',2,'MarkerSize',16)
+    % simulated phase
     figure(4)
     hAx=axes;
     hAx.XScale='log';
-    % xlim([f(4) f(8)]);
-    % ylim([-10 60]);
-    set(gca,'FontSize',28);
-    set(gcf, 'WindowState', 'maximized');
     hold on
-    errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([p_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#D95319')
-    errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([p_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#EDB120')
+    set(gca,'FontSize',20);
+    set(gcf, 'WindowState', 'maximized')
+    plot(log10(f),p_sim_2cm,'*--r','LineWidth',2,'MarkerSize',16)
+    plot(log10(f),p_sim_4cm,'*--b','LineWidth',2,'MarkerSize',16)
+    plot(log10(f),p_cadence_2cm,'s:r','LineWidth',2,'MarkerSize',16)
+    plot(log10(f),p_cadence_4cm,'s:b','LineWidth',2,'MarkerSize',16)
+elseif limb == 2 && subject == 10
+    a_2cm_4cm(:,1,:) = a_2cm(:,:,limb);
+    a_2cm_4cm(:,2,:) = a_4cm(:,:,limb);
+    p_2cm_4cm(:,1,:) = p_2cm(:,:,limb);
+    p_2cm_4cm(:,2,:) = p_4cm(:,:,limb);
     
-    plot(f,p_sim_2cm,'*--r','LineWidth',2,'MarkerSize',16)
-    plot(f,p_sim_4cm,'*--b','LineWidth',2,'MarkerSize',16)
-    plot(f,p_cadence_2cm,'s:r','LineWidth',2,'MarkerSize',16)
-    plot(f,p_cadence_4cm,'s:b','LineWidth',2,'MarkerSize',16)
-elseif limb == 2 && subject == 2
-    figure(4)
-    hold on
-    errorbar(f,mean([p_left_2cm ; p_right_4cm]),std([p_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
-    errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([p_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
-    
-%     plot(f,p_sim_2cm,'*--g','LineWidth',2,'MarkerSize',16)
-%     plot(f,p_sim_4cm,'*--y','LineWidth',2,'MarkerSize',16)
-%     plot(f,p_cadence_2cm,'s:g','LineWidth',2,'MarkerSize',16)
-%     plot(f,p_cadence_4cm,'s:y','LineWidth',2,'MarkerSize',16)
-    
+    % boxplot magnitude
+    figure(3)
+    box_a = boxplot2(a_2cm_4cm,log10(f));
+    cmap = get(0, 'defaultaxescolororder');
+    for ii = 1:2
+        structfun(@(x) set(x(3-ii,:), 'color', cmap(ii,:), ...
+            'markeredgecolor', cmap(ii,:)), box_a);
+    end
+    xticks(log10(f))
+    xticklabels(num2str(f'/1e3,'%.0f'))
     grid minor
-    xlabel('Frequency [Hz]')
-    ylabel('Phase [Degrees]')
-    legend({'Subject 1 - Measured Mean - 2.5cm IED',...
-            'Subject 1 - Measured Mean - 4cm IED',...
-            'Subject 2 - Measured Mean - 2.5cm IED',...
-            'Subject 2 - Measured Mean - 4cm IED',...
-            'FEA - 2.5cm IED',...
+    xlabel('Frequency [kHz]')
+    ylabel('Magnitude [Ohm]')
+    legend({'FEA - 2.5cm IED',...
             'FEA - 4cm IED',...
             'Circuit Model - 2.5cm IED',...
-            'Circuit Model - 4cm IED',},...
-            'Location','northwest','NumColumns',1)
-%     print -depsc p_leg_1
+            'Circuit Model - 4cm IED',...
+            'Measurements - 2.5cm IED',...
+            'Measurements - 4cm IED'},...
+            'Location','northeast','NumColumns',1)
+%      print -depsc a_leg_1
+    
+    % boxplot phase
+    figure(4)
+    box_a = boxplot2(p_2cm_4cm,log10(f));
+    cmap = get(0, 'defaultaxescolororder');
+    for ii = 1:2
+        structfun(@(x) set(x(3-ii,:), 'color', cmap(ii,:), ...
+            'markeredgecolor', cmap(ii,:)), box_a);
+    end
+    xticks(log10(f))
+    xticklabels(num2str(f'/1e3,'%.0f'))
+    grid minor
+    xlabel('Frequency [kHz]')
+    ylabel('Phase [Degrees]')
+    legend({'FEA - 2.5cm IED',...
+            'FEA - 4cm IED',...
+            'Circuit Model - 2.5cm IED',...
+            'Circuit Model - 4cm IED',...
+            'Measurements - 2.5cm IED',...
+            'Measurements - 4cm IED'},...
+            'Location','southeast','NumColumns',1)
+%      print -depsc p_leg_1
 end
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%% Mean - 2.5 cm IED %%%
+% 
+% if limb == 1 && subject == 1
+%     figure(1)
+%     hAx=axes;
+%     hAx.XScale='log';
+%     % xlim([f(4) f(8)]);
+%     % ylim([-10 70]);
+%     hold on
+%     set(gca,'FontSize',28);
+%     set(gcf, 'WindowState', 'maximized');
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#D95319')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#EDB120')
+% elseif limb == 1 && subject == 3
+%     figure(1)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 4
+%     figure(1)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 5
+%     figure(1)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 6
+%     figure(1)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 7
+%     figure(1)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 8
+%     figure(1)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 9
+%     figure(1)
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 10
+%     figure(1)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% 
+% elseif limb == 1 && subject == 2
+%     figure(1)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+%     plot(f,a_sim_2cm,'*--r','LineWidth',2,'MarkerSize',16)
+%     plot(f,a_sim_4cm,'*--b','LineWidth',2,'MarkerSize',16)
+%     plot(f,a_cadence_2cm,'s:r','LineWidth',2,'MarkerSize',16)
+%     plot(f,a_cadence_4cm,'s:b','LineWidth',2,'MarkerSize',16)
+%     
+% %     plot(f,a_sim_2cm,'*--g','LineWidth',2,'MarkerSize',16)
+% %     plot(f,a_sim_4cm,'*--y','LineWidth',2,'MarkerSize',16)
+% %     plot(f,a_cadence_2cm,'s:g','LineWidth',2,'MarkerSize',16)
+% %     plot(f,a_cadence_4cm,'s:y','LineWidth',2,'MarkerSize',16)
+%     grid minor
+%     xlabel('Frequency [Hz]')
+%     ylabel('Magnitude [Ohm]')
+%     legend({'Subject 1 - Measured Mean - 2.5cm IED',...
+%             'Subject 1 - Measured Mean - 4cm IED',...
+%             'Subject 2 - Measured Mean - 2.5cm IED',...
+%             'Subject 2 - Measured Mean - 4cm IED',...
+%             'FEA - 2.5cm IED',...
+%             'FEA - 4cm IED',...
+%             'Circuit Model - 2.5cm IED',...
+%             'Circuit Model - 4cm IED',},...
+%             'Location','southwest','NumColumns',1)
+% %      print -depsc a_arm_1
+% 
+% elseif limb == 2 && subject == 1
+%     figure(3)
+%     hAx=axes;
+%     hAx.XScale='log';
+%     % xlim([f(4) f(8)]);
+%     ylim([-15 60]);
+%     hold on
+%     set(gca,'FontSize',28);
+%     set(gcf, 'WindowState', 'maximized');
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#D95319')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#EDB120')
+% elseif limb == 2 && subject == 3
+%     figure(3)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 4
+%     figure(3)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 5
+%     figure(3)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 6
+%     figure(3)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 7
+%     figure(3)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 8
+%     figure(3)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 9
+%     figure(3)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 10
+%     figure(3)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 2
+%     figure(3)
+%     hold on
+%     errorbar(f,mean([a_left_2cm ; a_right_2cm]),std([a_left_2cm ; a_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([a_left_4cm ; a_right_4cm]),std([a_left_4cm ; a_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+%     plot(f,a_sim_2cm,'*--r','LineWidth',2,'MarkerSize',16)
+%     plot(f,a_sim_4cm,'*--b','LineWidth',2,'MarkerSize',16)
+%     plot(f,a_cadence_2cm,'s:r','LineWidth',2,'MarkerSize',16)
+%     plot(f,a_cadence_4cm,'s:b','LineWidth',2,'MarkerSize',16)
+%     
+% %     plot(f,a_sim_2cm,'*--g','LineWidth',2,'MarkerSize',16)
+% %     plot(f,a_sim_4cm,'*--y','LineWidth',2,'MarkerSize',16)
+% %     plot(f,a_cadence_2cm,'s:g','LineWidth',2,'MarkerSize',16)
+% %     plot(f,a_cadence_4cm,'s:y','LineWidth',2,'MarkerSize',16)
+%     grid minor
+%     xlabel('Frequency [Hz]')
+%     ylabel('Magnitude [Ohm]')
+%     legend({'Subject 1 - Measured Mean - 2.5cm IED',...
+%             'Subject 1 - Measured Mean - 4cm IED',...
+%             'Subject 2 - Measured Mean - 2.5cm IED',...
+%             'Subject 2 - Measured Mean - 4cm IED',...
+%             'FEA - 2.5cm IED',...
+%             'FEA - 4cm IED',...
+%             'Circuit Model - 2.5cm IED',...
+%             'Circuit Model - 4cm IED',},...
+%             'Location','southwest','NumColumns',1)
+% %      print -depsc a_leg_1
+% end
+% 
+% 
+% if limb == 1 && subject == 1
+%     figure(2)
+%     hAx=axes;
+%     hAx.XScale='log';
+%     % xlim([f(4) f(8)]);
+%     % ylim([-10 60]);
+%     set(gca,'FontSize',28);
+%     set(gcf, 'WindowState', 'maximized');
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([p_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#D95319')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([p_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#EDB120')
+% elseif limb == 1 && subject == 3
+%     figure(2)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 4
+%     figure(2)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 5
+%     figure(2)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 6
+%     figure(2)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 7
+%     figure(2)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 8
+%     figure(2)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 9
+%     figure(2)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 10
+%     figure(2)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 1 && subject == 2
+%     figure(2)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([p_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([p_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+%     plot(f,p_sim_2cm,'*--r','LineWidth',2,'MarkerSize',16)
+%     plot(f,p_sim_4cm,'*--b','LineWidth',2,'MarkerSize',16)
+%     plot(f,p_cadence_2cm,'s:r','LineWidth',2,'MarkerSize',16)
+%     plot(f,p_cadence_4cm,'s:b','LineWidth',2,'MarkerSize',16)
+%     
+% %     plot(f,p_sim_2cm,'*--g','LineWidth',2,'MarkerSize',16)
+% %     plot(f,p_sim_4cm,'*--y','LineWidth',2,'MarkerSize',16)
+% %     plot(f,p_cadence_2cm,'s:g','LineWidth',2,'MarkerSize',16)
+% %     plot(f,p_cadence_4cm,'s:y','LineWidth',2,'MarkerSize',16)
+%     
+%     grid minor
+%     xlabel('Frequency [Hz]')
+%     ylabel('Phase [Degrees]')
+%     legend({'Subject 1 - Measured Mean - 2.5cm IED',...
+%             'Subject 1 - Measured Mean - 4cm IED',...
+%             'Subject 2 - Measured Mean - 2.5cm IED',...
+%             'Subject 2 - Measured Mean - 4cm IED',...
+%             'FEA - 2.5cm IED',...
+%             'FEA - 4cm IED',...
+%             'Circuit Model - 2.5cm IED',...
+%             'Circuit Model - 4cm IED',},...
+%             'Location','northwest','NumColumns',1)
+% %      print -depsc p_arm_1
+%  
+% elseif limb == 2 && subject == 1
+%     figure(4)
+%     hAx=axes;
+%     hAx.XScale='log';
+%     % xlim([f(4) f(8)]);
+%     % ylim([-10 60]);
+%     set(gca,'FontSize',28);
+%     set(gcf, 'WindowState', 'maximized');
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([p_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#D95319')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([p_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#EDB120')
+% elseif limb == 2 && subject == 3
+%     figure(4)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 4
+%     figure(4)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 5
+%     figure(4)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 6
+%     figure(4)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 7
+%     figure(4)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 8
+%     figure(4)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 9
+%     figure(4)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 10
+%     figure(4)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([a_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([a_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+% elseif limb == 2 && subject == 2
+%     figure(4)
+%     hold on
+%     errorbar(f,mean([p_left_2cm ; p_right_2cm]),std([p_left_2cm ; p_right_2cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#7E2F8E')
+%     errorbar(f,mean([p_left_4cm ; p_right_4cm]),std([p_left_4cm ; p_right_4cm]),'o-','LineWidth',2,'MarkerSize',16,'Color','#77AC30')
+%     plot(f,p_sim_2cm,'*--r','LineWidth',2,'MarkerSize',16)
+%     plot(f,p_sim_4cm,'*--b','LineWidth',2,'MarkerSize',16)
+%     plot(f,p_cadence_2cm,'s:r','LineWidth',2,'MarkerSize',16)
+%     plot(f,p_cadence_4cm,'s:b','LineWidth',2,'MarkerSize',16)
+%     
+% %     plot(f,p_sim_2cm,'*--g','LineWidth',2,'MarkerSize',16)
+% %     plot(f,p_sim_4cm,'*--y','LineWidth',2,'MarkerSize',16)
+% %     plot(f,p_cadence_2cm,'s:g','LineWidth',2,'MarkerSize',16)
+% %     plot(f,p_cadence_4cm,'s:y','LineWidth',2,'MarkerSize',16)
+%     
+%     grid minor
+%     xlabel('Frequency [Hz]')
+%     ylabel('Phase [Degrees]')
+%     legend({'Subject 1 - Measured Mean - 2.5cm IED',...
+%             'Subject 1 - Measured Mean - 4cm IED',...
+%             'Subject 2 - Measured Mean - 2.5cm IED',...
+%             'Subject 2 - Measured Mean - 4cm IED',...
+%             'FEA - 2.5cm IED',...
+%             'FEA - 4cm IED',...
+%             'Circuit Model - 2.5cm IED',...
+%             'Circuit Model - 4cm IED',},...
+%             'Location','northwest','NumColumns',1)
+% %     print -depsc p_leg_1
+% end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Errors Bar Plots %%%
 
 % a_meas_2cm = [a_left_2cm ; a_right_2cm];
